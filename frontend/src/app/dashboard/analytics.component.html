@@ -1,0 +1,62 @@
+<div>
+  <font size="4"> <strong>Current Location:</strong> {{currentLocation}} </font>
+</div>
+<br>
+<table>
+  <tr>
+    <td style="width:15%;">
+      <div class="btn-group float-left" dropdown>
+        <button type="button" class="btn dropdown-toggle" dropdownToggle><strong>Locations</strong></button>
+        <div class="dropdown-menu dropdown-menu-left" *dropdownMenu>
+          <a class="dropdown-item" (click)="GetDeviceID('All Locations')" >All Locations</a>
+          <a class="dropdown-item" (click)="GetDeviceID('IIT1-6-59')" >IIT1-6-59</a>
+          <a class="dropdown-item" (click)="GetDeviceID('IIT1-6-60')" >IIT1-6-60</a>
+          <a class="dropdown-item" (click)="GetDeviceID('IIT1-6-61')" >IIT1-6-61</a>
+          <a class="dropdown-item" (click)="GetDeviceID('IIT3-7-46')" >IIT3-7-46</a>
+          <a class="dropdown-item" (click)="GetDeviceID('IIT3-7-50/2')" >IIT3-7-50/2</a>
+          <a class="dropdown-item" (click)="GetDeviceID('IIT3-8-32')" >IIT3-8-32</a>
+          <a class="dropdown-item" (click)="GetDeviceID('IoTLab')" >IoT Lab</a>
+          <a class="dropdown-item" (click)="GetDeviceID('BigData')" >Big Data & Analytics Hub</a>
+        </div>
+      </div>
+    </td>
+    <td >
+      <button class="btn btn-primary" (click)="minusButton()" ><i class="fa fa-calendar-minus-o fa-lg"></i></button>
+    </td> 
+    <td style="width:25%">
+      <input  class="form-control" style="float:none" value="{{displayArea}}" style="background-color: #FFFFFF;  " readonly />
+    </td>  
+    <td>
+      <button class="btn btn-primary" (click)="plusButton()"><i class="fa fa-calendar-plus-o fa-lg"></i></button>
+    </td>
+    <td  style="width:55%;padding: 0 5% 0;" >
+      <button [disabled]="num == 7" class="btn btn-primary" (click)="weekClick()">Week</button>
+      <button [disabled]="num == 1" class="btn btn-primary" (click)="monthClick()">Month</button>
+    </td>
+  </tr>
+</table>
+<br>
+<div class="animated fadeIn">
+  <div class="card-columns cols-2">
+    <div class="card">
+          <div class="card-header">
+            Pie Chart
+            <div class="card-actions">
+              <a href="http://www.chartjs.org">
+                <small class="text-muted">docs</small>
+              </a>
+            </div>
+          </div>
+          <div class="card-block">
+            <div class="chart-wrapper">
+              <canvas baseChart class="chart"
+              [data]="pieChartData"
+              [labels]="pieChartLabels"
+              [chartType]="pieChartType"
+              (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+            </div>
+          </div>
+    </div>
+  </div>
+</div>
