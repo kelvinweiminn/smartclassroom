@@ -27,6 +27,7 @@ import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { NotificationsComponent } from './layouts/notifications/notifications.component';
 import { NotificationItemComponent } from './layouts/notifications/notification-item/notification-item.component';
 import { FacialComponent } from './facial/facial.component';
+import { ControlComponent } from './control/control.component';
 
 // import { async } from 'async-waterfall';
 
@@ -52,6 +53,7 @@ import { FacialComponent } from './facial/facial.component';
     NotificationsComponent,
     NotificationItemComponent,
     FacialComponent,
+    ControlComponent,
   ],
   providers: [{
     provide: LocationStrategy,

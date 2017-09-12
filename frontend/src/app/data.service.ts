@@ -175,4 +175,10 @@ export class DataService {
     }
 
 
+  //switchcontrol
+    switchToggle(command){
+      return this.http.get('http://192.168.1.81:8181/device.cgi?dev=0&cmd=' + command)
+      .map((res) => res.json());
+    }
+
 }

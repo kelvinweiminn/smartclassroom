@@ -1,0 +1,88 @@
+<!-- <label class="switch switch-sm switch-text switch-info pull-left m-b-0">
+  <input class="switch-input" type="checkbox">
+  <span class="switch-label" data-off="Off" data-on="On"></span>
+  <span class="switch-handle"></span>
+</label> -->
+
+<div class="card">
+  <div class="card-header">
+      Mock Data
+  </div>
+
+  <div class="card-block">
+      <form action="" class="form-horizontal " method="post" #f="NgForm" (onSubmit)="onSubmit(f)">
+
+          <div class="form-group row">
+            <label class="col-md-3 form-control-label">Data</label>
+            <div class="col-md-9">
+                <label class="radio-inline" for="inline-radio1">
+                    <input id="inline-radio1" name="inline-radios" type="radio" value="option1"> Light
+                </label>
+                <label class="radio-inline" for="inline-radio2">
+                    <input id="inline-radio2" name="inline-radios" type="radio" value="option2"> Temperature
+                </label>
+            </div>
+          </div>
+          
+          <div class="form-group row">
+              <label class="col-sm-3 form-control-label" for="input-large">Value</label>
+              <div class="col-sm-6">
+                  <input class="form-control input-lg" id="input-large" name="input-large" placeholder="Mock Value" type="text">
+              </div>
+          </div>
+          
+      </form>
+  </div>
+
+  <div class="card-footer">
+      <button class="btn btn-sm btn-primary" type="submit"><i class="fa fa-dot-circle-o"></i> Submit</button>
+  </div>
+</div>
+
+<div class="card">
+<div class="card-header">
+<i class="fa fa-align-justify"></i>
+</div>
+<div class="card-block">
+<table class="table table-striped">
+  <thead>
+      <tr>
+          <th>Device</th>
+          <th>Control</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Light</td>
+          <td>
+            <label #input class="switch switch-sm switch-text switch-info pull-left m-b-0">
+              <input class="switch-input" type="checkbox">
+              <span class="switch-label" data-off="Off" data-on="On"></span>
+              <span class="switch-handle"></span>
+            </label>
+          </td>
+      </tr>
+      <tr>
+          <td>A/C</td>
+          <td>
+            <label class="switch switch-sm switch-text switch-info pull-left m-b-0">
+              <input class="switch-input" type="checkbox">
+              <span class="switch-label" data-off="Off" data-on="On"></span>
+              <span class="switch-handle"></span>
+            </label>
+          </td>
+      </tr>
+      <tr>
+          <td>Fan</td>
+          <td>
+            <label class="switch switch-sm switch-text switch-info pull-left m-b-0">
+              <input class="switch-input" type="checkbox" (change)="show($event)">
+              <span class="switch-label" data-off="Off" data-on="On"></span>
+              <span class="switch-handle"></span>
+            </label>
+          </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+</div>

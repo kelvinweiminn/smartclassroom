@@ -5,6 +5,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { FullLayoutComponent } from './layouts/full-layout.component';
 import { SimpleLayoutComponent } from './layouts/simple-layout.component';
 
+import { ControlComponent } from './control/control.component';
+
 export const routes: Routes = [
   {
     path: '',
@@ -31,20 +33,8 @@ export const routes: Routes = [
         loadChildren: './batteries/batteries.module#BatteriesModule'
       },
       {
-        path: 'location',
-        loadChildren: './location/location.module#LocationModule'
-      },
-      {
-        path: 'icons',
-        loadChildren: './icons/icons.module#IconsModule'
-      },
-      {
-        path: 'widgets',
-        loadChildren: './widgets/widgets.module#WidgetsModule'
-      },
-      {
-        path: 'charts',
-        loadChildren: './chartjs/chartjs.module#ChartJSModule'
+        path: 'control',
+        component: ControlComponent
       }
     ]
   },
