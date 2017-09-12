@@ -27,7 +27,7 @@ export class ControlComponent implements OnInit {
     }
   }
 
-  onsubmit(){
+  onSubmit(){
     console.log(this.data);
   }
 
