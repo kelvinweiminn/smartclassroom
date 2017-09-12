@@ -9,7 +9,8 @@ import * as moment from 'moment-timezone';
 @Component({
   selector: 'app-dropdownlist',
   templateUrl: './dropdownlist.component.html',
-  styleUrls: ['./dropdownlist.component.scss']
+  styleUrls: ['./dropdownlist.component.scss'],
+  providers: []
 })
 export class DropdownlistComponent implements OnInit {
   test:string;

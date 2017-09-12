@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { FormsModule, NgForm} from '@angular/forms';
+import { FormGroup, FormControl} from '@angular/forms';
 
 import { DataService } from '../data.service';
 
@@ -9,6 +9,8 @@ import { DataService } from '../data.service';
   styleUrls: ['./control.component.scss']
 })
 export class ControlComponent implements OnInit {
+
+  data = {};
 
   constructor(private dataService: DataService) { }
 
@@ -25,8 +27,8 @@ export class ControlComponent implements OnInit {
     }
   }
 
-  onsubmit(f){
-    console.log(f);
+  onsubmit(){
+    console.log(this.data);
   }
 
 }

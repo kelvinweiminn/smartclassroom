@@ -22,8 +22,10 @@ import { SimpleLayoutComponent } from './layouts/simple-layout.component';
 import { HttpModule } from '@angular/http';
 import { DataService } from './data.service';
 
+import { NgxMyDatePickerModule } from 'ngx-mydatepicker'
+
 import { MomentTimezoneModule } from 'angular-moment-timezone';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import { FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NotificationsComponent } from './layouts/notifications/notifications.component';
 import { NotificationItemComponent } from './layouts/notifications/notification-item/notification-item.component';
 import { FacialComponent } from './facial/facial.component';
@@ -40,7 +42,8 @@ import { ControlComponent } from './control/control.component';
     ChartsModule,
     HttpModule,
     MomentTimezoneModule,
-    
+    FormsModule,
+    NgxMyDatePickerModule.forRoot()
   ],
   declarations: [
     AppComponent,
@@ -59,7 +62,8 @@ import { ControlComponent } from './control/control.component';
     provide: LocationStrategy,
     useClass: HashLocationStrategy
   },
-  DataService],
+  DataService,
+  NgxMyDatePickerModule],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }
