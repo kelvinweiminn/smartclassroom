@@ -6,6 +6,10 @@ var path = require('path');
 
 const route = require('./routes/route.js');
 app.use('/api', route);
+const facedata = require('./routes/facedata.js');
+app.use('/api/facedata', facedata);
+const mockdata = require('./routes/mockdata.js');
+app.use('/api/mockdata', mockdata);
 
 //middle
 app.use(cors());

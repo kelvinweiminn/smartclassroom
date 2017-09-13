@@ -749,20 +749,23 @@ router.get('/notifications/all', function(req,res){
 
 });
 
-router.get('/facedata/all', function(req,res){
-    
-    connection.query('SELECT * FROM SenseitTP.Emotions' , function (err, result) {
-        
-        if (err) {
-            console.error(err);
-            return;
-        }
-        else{
-            console.log("Queried Face data Successfully!");
-            res.send(result);
-        }
-    });
 
-});
+
+//post mock data
+// router.get('/facedata/all', function(req,res){
+    
+//     connection.query('SELECT * FROM SenseitTP.Emotions' , function (err, result) {
+        
+//         if (err) {
+//             console.error(err);
+//             return;
+//         }
+//         else{
+//             console.log("Queried Face data Successfully!");
+//             res.send(result);
+//         }
+//     });
+
+// });
 
 module.exports = router;

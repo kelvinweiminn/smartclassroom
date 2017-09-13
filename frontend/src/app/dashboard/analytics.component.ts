@@ -34,8 +34,9 @@ export class AnalyticsComponent implements OnInit {
   avgTempDayArr= [];
   maxTempDayArr= [];
   minTempDayArr= [];
+  
 
-  timeTempArr = [];
+  
   timeHumiArr = [];
   timeCO2Arr = [];
   timeLightArr = [];
@@ -45,7 +46,6 @@ export class AnalyticsComponent implements OnInit {
   displayDate = new Date();
   displyToday;
   displayArea;
-
 
   startDate;
   endDate;
@@ -59,7 +59,15 @@ export class AnalyticsComponent implements OnInit {
   lightDevice = '20FE30" or Device_ID = "210043" or Device_ID = "21034E" or Device_ID = "2100AB" or Device_ID = "210285" or Device_ID = "1CB001" or Device_ID = "1CB049" or Device_ID = "1CB00D';
     
 
+  pieLightArr = [];
+  pieTempArr = [];
+  pieHumiArr = [];
+  pieCO2Arr = [];
 
+  pieLightDevice = [];
+  pieTempDevice = [];
+  pieHumiDevice = [];
+  pieCO2Device = [];
 
   public brandPrimary = '#20a8d8';
   public brandSuccess = '#4dbd74';
@@ -67,10 +75,20 @@ export class AnalyticsComponent implements OnInit {
   public brandWarning = '#f8cb00';
   public brandDanger = '#f86c6b';
 
-  ngOnInit() {
-    this.monthClick();
+  faceArr = [];
+  tempArr = [];
+  testDevice = '2102CB';
+  testDate = '2017-09-12';
+  timeFaceArr = [];
+  timeTempArr = [];
+  showTempTime = [];
+  showFaceTime = [];
+  rawTimeTemp;
+  rawTimeFace;
 
-    this.faceDataRetrieve();
+  ngOnInit() {
+   this.retrieveFace();
+   this.retrieveTemp();
   }
 //device id
   GetDeviceID(room:string){
@@ -120,6 +138,43 @@ export class AnalyticsComponent implements OnInit {
     }
     
   }
+  // GetRoom(device:string){
+    
+  //   if(device == "2102CB" || device =="20FE30"){
+  //     this.tempLabels.push('IIT1-6-59');
+  //     this.pieCO2Device.push('IIT1-6-59') ;
+  //     this.pieLightDevice.push('IIT1-6-59') ;
+  //   } else if (device== "210043" || device =="210088" ){
+  //     this.tempLabels.push( 'IIT1-6-60');
+  //     this.pieCO2Device.push('IIT1-6-60') ;
+  //     this.pieLightDevice.push('IIT1-6-60') ;
+  //   } else if (device == "21034E" || device =="20FD79"){
+  //     this.tempLabels.push('IIT1-6-61');
+  //     this.pieCO2Device.push('IIT1-6-61') ;
+  //     this.pieLightDevice.push('IIT1-6-61') ;
+  //   } else if (device == "210285" || device =="2102AC"){
+  //     this.tempLabels.push('IIT3-7-50/2');
+  //     this.pieCO2Device.push('IIT3-7-50/2') ;
+  //     this.pieLightDevice.push('IIT3-7-50/2') ;
+  //   } else if (device == "2100AB"|| device =="2101E9"){
+  //     this.tempLabels.push('IIT3-7-46');
+  //     this.pieCO2Device.push('IIT3-7-46') ;
+  //     this.pieLightDevice.push('IIT3-7-46') ;
+  //   } else if (device == "1CB001" || device =="1CB0C2"){
+  //     this.tempLabels.push('IIT3-8-32');
+  //     this.pieCO2Device.push('IIT3-8-32') ;
+  //     this.pieLightDevice.push('IIT3-8-32') ;
+  //   } else if (device == "1CB00D" || device =="1CB0D4"){
+  //     this.tempLabels.push('IoTLab') ;
+  //     this.pieCO2Device.push('IoTLab') ;
+  //     this.pieLightDevice.push('IoTLab') ;
+  //   } else if (device == "1CB049"|| device =="1CB021"){
+  //     this.tempLabels.push('BigData');
+  //     this.pieCO2Device.push('BigData') ;
+  //     this.pieLightDevice.push('BigData') ;
+  //   }
+    
+  // }
 //select by week/month
   firstDayOfMonth(day) {
     var d = new Date(Date.apply(null, arguments));
@@ -134,13 +189,13 @@ export class AnalyticsComponent implements OnInit {
       d.setDate(0);
       return d.toISOString();
   }
-  callAll(){
-      this.tempCall();
-      this.humiCall();
-      this.lightCall();
-      this.CO2Call();
+  // callAll(){
+  //     this.tempCall();
+  //     this.humiCall();
+  //     this.lightCall();
+  //     this.CO2Call();
 
-  }
+  // }
 
   minusButton(){
     if(this.num==7 ){
@@ -158,7 +213,7 @@ export class AnalyticsComponent implements OnInit {
       this.endDate = formattedTime;
       this.displayArea ="Week ("+this.startDate +" to " +this.endDate+")";
       
-      this.callAll();
+      // this.callAll();
     }
     else if(this.num==1){
       var newDate =  new Date(this.startDate); 
@@ -178,7 +233,7 @@ export class AnalyticsComponent implements OnInit {
       this.displayArea ="Month ("+this.startDate +" to " +this.endDate+")";
       
 
-      this.callAll();
+      // this.callAll();
     }
   }
   plusButton(){
@@ -196,7 +251,7 @@ export class AnalyticsComponent implements OnInit {
       var formattedTime = Singapore.format("YYYY-MM-DD");
       this.endDate = formattedTime;
       this.displayArea ="Week ("+this.startDate +" to " +this.endDate+")";
-      this.callAll();
+      // this.callAll();
     }
     else if(this.num == 1){
       var newDate =  new Date(this.endDate); 
@@ -216,7 +271,7 @@ export class AnalyticsComponent implements OnInit {
       this.displayArea ="Month ("+this.startDate +" to " +this.endDate+")";
       
 
-      this.callAll();
+      // this.callAll();
     }
   }
 
@@ -235,7 +290,7 @@ export class AnalyticsComponent implements OnInit {
     var Singapore = UTC.clone().tz("Asia/Singapore");
     this.endDate = Singapore.format("YYYY-MM-DD");
     this.displayArea ="Week ("+this.startDate +" to " +this.endDate+")";
-    this.callAll();
+    // this.callAll();
   }
   monthClick(){
     this.num = 1;
@@ -250,7 +305,7 @@ export class AnalyticsComponent implements OnInit {
     var Singapore = UTC.clone().tz("Asia/Singapore");
     this.endDate = Singapore.format("YYYY-MM-DD");
     this.displayArea ="Month ("+this.startDate +" to " +this.endDate+")";
-    this.callAll();
+    // this.callAll();
     
   }
   getWeek(day) {
@@ -271,350 +326,131 @@ export class AnalyticsComponent implements OnInit {
 };
 
 
-
   
 //call light data    
   lightCall(){
-    this.avgLightDayArr = [];
-    this.maxLightDayArr = [];
-    this.minLightDayArr = [];
-    this.timeLightArr = [];
-    this.retrieveAvgLightDay();
-    this.retrieveMaxLightDay();
-    this.retrieveMinLightDay();
-    this.retrieveAvgLight();
+    this.pieLightArr = [];
+    this.pieLightDevice = [];
+    //this.retrievePieLight();
   }
-  //avg
-    retrieveAvgLight(){
-      this.dataService.getLightAverage(this.lightDevice,this.startDate,this.endDate).map(response => {
-        for(var item of response){
-        this.avgLight = JSON.stringify(item.average);
-        }
-      }).subscribe(()=>{
-      });
-    }
-    retrieveAvgLightDay(){
-        console.log("inday: "+this.startDate);
-        console.log("outday: "+this.endDate);
-        console.log("device:"+this.lightDevice)
-        
-        this.dataService.getLightAverageDay(this.lightDevice,this.startDate,this.endDate).map(response => {      
-        for(var item of response){
-          var data = parseFloat(item.average);
-          this.avgLightDayArr.push(data);
-          var rawTime = item.Date;
-          var time = moment.tz(rawTime, "Asia/singapore");
-          this.timeLightArr.push(rawTime);
-          console.log("avg light arr"+this.avgLightDayArr);
-        }
-      }).subscribe(()=>{
-        this.refreshLight();
-      });
+  // retrievePieLight(){
+  //   this.dataService.getLightPie(this.startDate,this.endDate).map(response => {
+  //     for(var item of response){
+  //     this.pieLightArr.push(item.average);
+  //     //this.GetRoom(item.device);
       
-  }
-  //max
-    retrieveMaxLightDay(){
-        this.dataService.getLightMaxDay(this.lightDevice,this.startDate,this.endDate).map(response => {      
-        for(var item of response){
-          var data = parseFloat(item.max);
-          this.maxLightDayArr.push(data);
-          var rawTime = item.Date;
-          var time = moment.tz(rawTime, "Asia/singapore");
-          this.timeLightArr.push(time);
-        }
-      }).subscribe(()=>{
-        this.refreshLight();
-      });
-  }
-  //min
-    retrieveMinLightDay(){
-        this.dataService.getLightMinDay(this.lightDevice,this.startDate,this.endDate).map(response => {      
-        for(var item of response){
-          var data = parseFloat(item.min);
-          this.minLightDayArr.push(data);
-          var rawTime = item.Date;
-          var time = moment.tz(rawTime, "Asia/singapore");
-          this.timeLightArr.push(time);
-        }
-      }).subscribe(()=>{
-        this.refreshLight();
-      });
+  //     }
+  //   }).subscribe(()=>{
+  //     console.log(JSON.stringify(this.pieTempDevice[0]));
+  //     console.log(parseFloat(this.pieTempArr[0]));
+  //   });
+  // }
+//call face data
+  retrieveFace(){
+    this.dataService.getFaceAll().map(response => {
+      for(var item of response){
+      this.faceArr.push(parseFloat(item.percentage));
+      //console.log("facearr:" + this.faceArr);
+      var rawTimeFace = item.Time;
+      this.showFaceTime.push(rawTimeFace);
+      var time = moment.tz(rawTimeFace, "Asia/singapore");
+      this.timeFaceArr.push(time);
+      console.log("timearrface:"+this.showFaceTime)
     }
-    refreshLight(){
-        this.LightData = [
-            {
-            label: "Avg",
-            data: this.avgLightDayArr
-          },
-            {
-            label: "Max",
-            data: this.maxLightDayArr
-          },
-            {
-            label: "Min",
-            data: this.minLightDayArr
-          },
-        ]
-
-        setTimeout(() => {
-          this.LightLabels = this.timeLightArr;
-        });
-  }
-
-
-//call temperature data  
-  tempCall(){
-    this.avgTempDayArr= [];
-    this.maxTempDayArr= [];
-    this.minTempDayArr= [];
-    this.timeTempArr = [];
-    this.retrieveAvgTempDay();
-    this.retrieveMaxTempDay();
-    this.retrieveMinTempDay();
-    this.retrieveAvgTemp();
-  } 
-
-  //avg
-    retrieveAvgTemp(){
-      this.dataService.getTempAverage(this.tempDevice,this.startDate,this.endDate).map(response => {
-        for(var item of response){
-        this.avgTemp = JSON.stringify(item.average);
-        }
-      }).subscribe(()=>{
-      });
-    }
-    retrieveAvgTempDay(){
-      this.dataService.getTempAverageDay(this.tempDevice,this.startDate,this.endDate).map(response => {
-        for(var item of response){
-          var data = parseFloat(item.average);
-          this.avgTempDayArr.push(data);
-          var rawTime = item.Date;
-          var time = moment.tz(rawTime, "Asia/singapore");
-          this.timeTempArr.push(time);
-          
-        }
-      }).subscribe(()=>{
-        this.refreshTemp();
-      });
-      
-  }
-  //max
-    retrieveMaxTempDay(){
-      this.dataService.getTempMaxDay(this.tempDevice,this.startDate,this.endDate).map(response => {
-        for(var item of response){
-          var data = parseFloat(item.max);
-          this.maxTempDayArr.push(data);
-          var rawTime = item.Date;
-          var time = moment.tz(rawTime, "Asia/singapore");
-          this.timeTempArr.push(time);
-      }
-      }).subscribe(()=>{
-        this.refreshTemp();
-      });
-  }
-  //min
-    retrieveMinTempDay(){
-      this.dataService.getTempMinDay(this.tempDevice,this.startDate,this.endDate).map(response => {
-        for(var item of response){
-          var data = parseFloat(item.min);
-          this.minTempDayArr.push(data);
-          var rawTime = item.Date;
-          var time = moment.tz(rawTime, "Asia/singapore");
-          this.timeTempArr.push(time);
-      }
-      }).subscribe(()=>{
-        this.refreshTemp();
-      });
-    }
-    refreshTemp(){
-      this.TempData = [
-            {
-            label: "Avg",
-            data: this.avgTempDayArr
-          },
-            {
-            label: "Max",
-            data: this.maxTempDayArr
-          },
-            {
-            label: "Min",
-            data: this.minTempDayArr
-          },
-      ]
-      setTimeout(() => {
-        this.TempLabels = this.timeTempArr;
-      });
-  }
- 
-//call humidity data  
-  humiCall(){
-    this.avgHumiDayArr= [];
-    this.maxHumiDayArr= [];
-    this.minHumiDayArr= [];
-    this.timeHumiArr = [];
-    this.retrieveAvgHumiDay();
-    this.retrieveMaxHumiDay();
-    this.retrieveMinHumiDay();
-    this.retrieveAvgHumi();
+    }).subscribe(()=>{
+      this.refreshTemp();
+    });
   }
   
-  //avg
-    retrieveAvgHumi(){
-      this.dataService.getHumiAverage(this.tempDevice,this.startDate,this.endDate).map(response => {
+  retrieveTemp(){
+     this.dataService.getTempHumiData(this.testDevice,this.testDate,).map(response => {
         for(var item of response){
-        this.avgHumi = JSON.stringify(item.average);
+        this.tempArr.push(parseFloat(item.Temperature));
+        //console.log("temparr:"+this.tempArr)
+        var rawTimeTemp = item.Date;
+        this.showTempTime.push(rawTimeTemp);
+        var time = moment.tz(rawTimeTemp, "Asia/singapore");
+        this.timeTempArr.push(time);
+        console.log("timearrtemp:"+this.showTempTime)
         }
       }).subscribe(()=>{
-      });
-    }
-    retrieveAvgHumiDay(){
-      this.dataService.getHumiAverageDay(this.tempDevice,this.startDate,this.endDate).map(response => {
-        for(var item of response){
-          var data = parseFloat(item.average);
-          this.avgHumiDayArr.push(data);
-          var rawTime = item.Date;
-          var time = moment.tz(rawTime, "Asia/singapore");
-          this.timeHumiArr.push(time);
-        }
-      }).subscribe(()=>{
-        this.refreshHumi();
+        this.refreshTemp();
       });
   }
-  //max
-    retrieveMaxHumiDay(){
-      this.dataService.getHumiMaxDay(this.tempDevice,this.startDate,this.endDate).map(response => {
-        for(var item of response){
-          var data = parseFloat(item.max);
-          this.maxHumiDayArr.push(data);
-          var rawTime = item.Date;
-          var time = moment.tz(rawTime, "Asia/singapore");
-          this.timeHumiArr.push(time);
-      }
-      }).subscribe(()=>{
-          this.refreshHumi();
-        });
-  } 
-  //min
-    retrieveMinHumiDay(){
-      this.dataService.getHumiMinDay(this.tempDevice,this.startDate,this.endDate).map(response => {
-        for(var item of response){
-          var data = parseFloat(item.min);
-          this.minHumiDayArr.push(data);
-          var rawTime = item.Date;
-          var time = moment.tz(rawTime, "Asia/singapore");
-          this.timeHumiArr.push(time);
-      }
-      }).subscribe(()=>{
-          this.refreshHumi();
-        });
-    }
-    refreshHumi(){
-      this.HumiData = [
-        {
-        label: "Avg",
-        data: this.avgHumiDayArr
-      },
-        {
-        label: "Max",
-        data: this.maxHumiDayArr
-      },
-        {
-        label: "Min",
-        data: this.minHumiDayArr
-      },
+  refreshTemp(){
+      this.faceData = [
+            {
+            label: this.rawTimeFace,
+            data: this.tempArr,
+            yAxisID: 'left-y-axis'
+          },
+            {
+            label: this.rawTimeTemp,
+            data: this.faceArr,
+            yAxisID: 'right-y-axis'
 
-      ];
+          },
+        ]
       setTimeout(() => {
-        this.HumiLabels = this.timeHumiArr;
+        this.faceLabels=this.timeFaceArr;
+        //this.tempLabels=this.timeTempArr;
       });
   }
+
+ 
+//call temperature data  
+  // tempCall(){
+  //   this.pieTempArr = [];
+  //   this.pieTempDevice = [];
+  //   this.retrievePieTemp();
+  // } 
+  // retrievePieTemp(){
+  //   this.dataService.getTempPie(this.startDate,this.endDate).map(response => {
+  //     for(var item of response){
+  //     this.pieTempArr.push(parseFloat(item.average));
+  //     //this.GetRoom(item.device);
+  //     }
+  //   }).subscribe(()=>{
+  //     //this.tempLabels = this.pieTempDevice;
+  //     // this.tempData = this.pieTempArr;
+  //     // console.log(this.pieTempDevice);
+  //     // console.log(this.tempLabels);
+  //   });
+  // }
+
+ 
+//call humidity data  
+  // humiCall(){
+  //   this.pieHumiArr = [];
+  //   this.pieHumiDevice = [];
+  //   this.retrievePieHumi();
+  // }
+  // retrievePieHumi(){
+  //     this.dataService.getHumiPie(this.startDate,this.endDate).map(response => {
+  //       for(var item of response){
+  //       this.pieHumiArr.push(item.average);
+  //       //this.GetRoom(item.device);
+  //       }
+  //     }).subscribe(()=>{
+  //     });
+  // } 
+  
 
 //call CO2 data  
-  CO2Call(){
-    this.avgCO2DayArr = [];
-    this.maxCO2DayArr = [];
-    this.minCO2DayArr = [];
-    this.timeCO2Arr = [];
-    this.retrieveAvgCO2Day();
-    this.retrieveMaxCO2Day();
-    this.retrieveMinCO2Day();
-    this.retrieveAvgCO2();
-  }
- 
-  //avg
-    retrieveAvgCO2(){
-        this.dataService.getCO2Average(this.co2Device,this.startDate,this.endDate).map(response => {
-          for(var item of response){
-          this.avgCO2 = JSON.stringify(item.average);
-          }
-        }).subscribe(()=>{
-        });
-    }
-    retrieveAvgCO2Day(){
-      this.dataService.getCO2AverageDay(this.co2Device,this.startDate,this.endDate).map(response => {
-        for(var item of response){
-          var data = parseFloat(item.average);
-          this.avgCO2DayArr.push(data);
-          var rawTime = item.Date;
-          var time = moment.tz(rawTime, "Asia/singapore");
-          this.timeCO2Arr.push(time);
-        }
-      }).subscribe(()=>{
-        this.refreshCO2();
-      });
-      
-  }
-  //max
-    retrieveMaxCO2Day(){
-      this.dataService.getCO2MaxDay(this.co2Device,this.startDate,this.endDate).map(response => {
-        for(var item of response){
-          var data = parseFloat(item.max);
-          this.maxCO2DayArr.push(data);
-          var rawTime = item.Date;
-          var time = moment.tz(rawTime, "Asia/singapore");
-          this.timeCO2Arr.push(time);
-        }
-      }).subscribe(()=>{
-        this.refreshCO2();
-      });
-      
-  }   
-  //min
-    retrieveMinCO2Day(){
-      this.dataService.getCO2MinDay(this.co2Device,this.startDate,this.endDate).map(response => {
-        for(var item of response){
-          var data = parseFloat(item.min);
-          this.minCO2DayArr.push(data);
-          var rawTime = item.Date;
-          var time = moment.tz(rawTime, "Asia/singapore");
-          this.timeCO2Arr.push(time);
-        }
-      }).subscribe(()=>{
-        this.refreshCO2();
-      });
-      
-    }
-    refreshCO2(){
-      this.CO2Data = [
-          {
-          label: "Avg",
-          data: this.avgCO2DayArr
-        },
-          {
-          label: "Max",
-          data: this.maxCO2DayArr
-        },
-          {
-          label: "Min",
-          data: this.minCO2DayArr
-        },
-
-        ];
-      setTimeout(() => {
-        this.CO2Labels = this.timeCO2Arr;
-      });
-  }
-
+  // CO2Call(){
+  //   this.pieCO2Arr = [];
+  //   this.pieCO2Device = [];
+  //   this.retrievePieCO2();
+  // }
+  // retrievePieCO2(){
+  //     this.dataService.getCO2Pie(this.startDate,this.endDate).map(response => {
+  //       for(var item of response){
+  //       this.pieCO2Arr.push(item.average);
+  //       //this.GetRoom(item.device);        
+  //      }
+  //     }).subscribe(()=>{
+  //     });
+  // }
 
 
 
@@ -688,29 +524,6 @@ export class AnalyticsComponent implements OnInit {
   public test =['1','2','3','4','5'];
   public test2 =['10','20','30','40','50'];
   
-  //public mainChartData2: Array<any> =[];
-  // public mainChartData3: Array<any> =[];
-  //public mainChartData4: Array<any> =[];
-
-  // public mainChartData: Array<any> = [
-  //   {
-  //     data: this.mainChartData1,
-  //     label: 'light'
-  //   },
-  //   {
-  //     data: this.mainChartData2,
-  //     label: 'temp'
-  //   },
-  //   {
-  //     data: this.mainChartData3,
-  //     label: 'humi'
-  //   },
-    // {
-    //   data: this.mainChartData4,
-    //   label: 'CO2'
-    // }
-  // ];
-  
   
   public mainChartColours: Array<any> = [
     { // brandInfo
@@ -740,7 +553,6 @@ export class AnalyticsComponent implements OnInit {
   ];
   public mainChartLegend = false;
   public mainChartType = 'line';
-
 
 
 //light 
@@ -808,7 +620,6 @@ export class AnalyticsComponent implements OnInit {
   ];
   public CO2Labels: Array<any> = [];
 
-
 //transparent options for card
   public options ={
     scales: {
@@ -849,31 +660,115 @@ export class AnalyticsComponent implements OnInit {
 //objects used by the chart to display data
   
  
-  //colors
-    public lightColour = [
-      {
-        backgroundColor: 'rgba(250, 204, 0, 0.30)',  
-        borderColor: this.brandWarning,
-        fill: true,
-        radius: 2,
-        borderWidth: 2
-      },
-      {
-        backgroundColor: 'rgb(187,75,57)',  
-        borderColor: 'rgb(187,75,57)',
-        fill: false,
-        radius: 2,
-        borderWidth: 2
-      },
-      {
-        backgroundColor: 'rgb(77,189,116)',  
-        borderColor: 'rgb(77,189,116)',
-        fill: false,
-        radius: 2,
-        borderWidth: 2
-      },
-    ]; 
-    public humiColour = [
+//colors
+  public lightColour = [
+    {
+      backgroundColor: 'rgba(250, 204, 0, 0.30)',  
+      borderColor: this.brandWarning,
+      fill: true,
+      radius: 2,
+      borderWidth: 2
+    },
+    {
+      backgroundColor: 'rgb(187,75,57)',  
+      borderColor: 'rgb(187,75,57)',
+      fill: false,
+      radius: 2,
+      borderWidth: 2
+    },
+    {
+      backgroundColor: 'rgb(77,189,116)',  
+      borderColor: 'rgb(77,189,116)',
+      fill: false,
+      radius: 2,
+      borderWidth: 2
+    },
+  ]; 
+  public humiColour = [
+    {
+      backgroundColor: 'rgba(32, 168, 217, 0.40)',  
+      borderColor: this.brandPrimary,
+      fill: true,
+      radius: 2,
+      borderWidth: 2
+    },
+    {
+      backgroundColor: 'rgb(187,75,57)',  
+      borderColor: 'rgb(187,75,57)',
+      fill: false,
+      radius: 2,
+      borderWidth: 2
+    },
+    {
+      backgroundColor: 'rgb(77,189,116)',  
+      borderColor: 'rgb(77,189,116)',
+      fill: false,
+      radius: 2,
+      borderWidth: 2
+    },
+  ];
+  public tempColour = [
+    {
+      backgroundColor: 'rgba(99, 193, 222, 0.18)',  
+      borderColor: this.brandInfo,
+      fill: true,
+      radius: 2,
+      borderWidth: 2
+    },
+    {
+      backgroundColor: 'rgb(187,75,57)',  
+      borderColor: 'rgb(187,75,57)',
+      fill: false,
+      radius: 2,
+      borderWidth: 2
+    },
+    {
+      backgroundColor: 'rgb(77,189,116)',  
+      borderColor: 'rgb(77,189,116)',
+      fill: false,
+      radius: 2,
+      borderWidth: 2
+    },
+  ];
+  public co2Colour = [
+    {
+      backgroundColor: 'rgba(248, 109, 109, 0.30)',  
+      borderColor: this.brandDanger,
+      fill: true,
+      radius: 2,
+      borderWidth: 2
+    },
+    {
+      backgroundColor: 'rgb(187,75,57)',  
+      borderColor: 'rgb(187,75,57)',
+      fill: false,
+      radius: 2,
+      borderWidth: 2
+    },
+    {
+      backgroundColor: 'rgb(77,189,116)',  
+      borderColor: 'rgb(77,189,116)',
+      fill: false,
+      radius: 2,
+      borderWidth: 2
+    },
+];
+//face
+private faceData = [
+    {
+      label: [],
+      data: [],
+      yAxisID: 'left-y-axis'
+
+    },
+    {
+      label: [],
+      data: [],
+      yAxisID: 'right-y-axis'
+    },
+];
+public faceLabels: Array<any> = [];
+public faceColour = [
       {
         backgroundColor: 'rgba(32, 168, 217, 0.40)',  
         borderColor: this.brandPrimary,
@@ -896,58 +791,6 @@ export class AnalyticsComponent implements OnInit {
         borderWidth: 2
       },
     ];
-    public tempColour = [
-      {
-        backgroundColor: 'rgba(99, 193, 222, 0.18)',  
-        borderColor: this.brandInfo,
-        fill: true,
-        radius: 2,
-        borderWidth: 2
-      },
-      {
-        backgroundColor: 'rgb(187,75,57)',  
-        borderColor: 'rgb(187,75,57)',
-        fill: false,
-        radius: 2,
-        borderWidth: 2
-      },
-      {
-        backgroundColor: 'rgb(77,189,116)',  
-        borderColor: 'rgb(77,189,116)',
-        fill: false,
-        radius: 2,
-        borderWidth: 2
-      },
-    ];
-    public co2Colour = [
-      {
-        backgroundColor: 'rgba(248, 109, 109, 0.30)',  
-        borderColor: this.brandDanger,
-        fill: true,
-        radius: 2,
-        borderWidth: 2
-     },
-     {
-        backgroundColor: 'rgb(187,75,57)',  
-        borderColor: 'rgb(187,75,57)',
-        fill: false,
-        radius: 2,
-        borderWidth: 2
-      },
-      {
-        backgroundColor: 'rgb(77,189,116)',  
-        borderColor: 'rgb(77,189,116)',
-        fill: false,
-        radius: 2,
-        borderWidth: 2
-      },
-  ];
-  // Pie
-  public pieChartLabels: string[] = ['Download Sales', 'In-Store Sales', 'Mail Sales'];
-  public pieChartData: number[] = [300, 500, 100];
-  public pieChartType = 'pie';
-
-    
 private optionsLineChart = {
       animation: false,
       responsive: true,
@@ -966,23 +809,50 @@ private optionsLineChart = {
             }
         },],
         yAxes: [{
-          ticks: {
-            beginAtZero: false
-          },
-          
+          // ticks: {
+          //   beginAtZero: false
+          // },
+          id: 'left-y-axis',
+          type: 'linear',
+          position: 'left'
 
+        },
+        {
+          id: 'right-y-axis',
+          type: 'linear',
+          position: 'right'
         }]
       }
-  };
+      
+};
 
-  faceDataRetrieve(){
-    this.dataService.getFaceAll().subscribe(
-      (data) => {
-        console.log(JSON.stringify(data));
-    })
-  }
 
+};
   
+  
+  // private optionsLineChart = {
+  //       animation: false,
+  //       responsive: true,
+  //       maintainAspectRatio:true,
+  //       scales: {
+  //         xAxes: [{
+  //             display: true,
+  //             type: "time",
+  //             time: {
+  //                 unit: "hour",
+  //                 tooltipFormat: 'YYYY-MM-DD hh:mm A'
+  //             },
+  //             scaleLabel: {
+  //                 display: false,
+  //                 labelString: 'Time'
+  //             }
+  //         },],
+  //         yAxes: [{
+  //           ticks: {
+  //             beginAtZero: false
+  //           },
+            
 
-
-}
+  //         }]
+  //       }
+  //   };

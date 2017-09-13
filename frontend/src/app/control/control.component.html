@@ -4,33 +4,40 @@
   <span class="switch-handle"></span>
 </label> -->
 
+<div class="row">
+    <div class="col">
+        <button class="btn btn-primary">Auto</button>
+        <button class="btn btn-primary">Manual</button>
+    </div>
+</div>
+
 <div class="card-columns cols-2">
 
-        <div class="card">
-        <div class="card-header">
-            Temperature
-            <!--<div class="card-actions">
-            <a href="http://www.chartjs.org">
-                <small class="text-muted">docs</small>
-            </a>
-            </div>-->
-        </div>
-        <div class="card-block">
-            <div class="chart-wrapper">
-            <canvas baseChart
-                [datasets]="tempDataset"
-                [labels]="tempLabels"
-                [options]="options"
-                [chartType]="'line'"
-                [colors]="tempColour">
-            </canvas>
-            <br/>
-            </div>
-        </div>
-        </div>
-
-
     <div class="card">
+    <div class="card-header">
+        Temperature
+        <!--<div class="card-actions">
+        <a href="http://www.chartjs.org">
+            <small class="text-muted">docs</small>
+        </a>
+        </div>-->
+    </div>
+    <div class="card-block">
+        <div class="chart-wrapper">
+        <canvas baseChart
+            [datasets]="tempDataset"
+            [labels]="tempLabels"
+            [options]="options"
+            [chartType]="'line'"
+            [colors]="tempColour">
+        </canvas>
+        <br/>
+        </div>
+    </div>
+</div>
+
+
+<div class="card">
     <div class="card-header">
         Mock Data
     </div>
@@ -69,9 +76,33 @@
         </form>
     </div>
 
-    </div>
+</div>
 
-    <div class="card">
+    
+<div class="card">
+    <div class="card-header">
+        Light
+        <!--<div class="card-actions">
+        <a href="http://www.chartjs.org">
+            <small class="text-muted">docs</small>
+        </a>
+        </div>-->
+    </div>
+    <div class="card-block">
+        <div class="chart-wrapper">
+        <canvas baseChart
+            [datasets]="tempDataset"
+            [labels]="tempLabels"
+            [options]="options"
+            [chartType]="'line'"
+            [colors]="tempColour">
+        </canvas>
+        <br/>
+        </div>
+    </div>
+</div>
+
+<div class="card">
     <div class="card-header">
     Controls
     </div>
