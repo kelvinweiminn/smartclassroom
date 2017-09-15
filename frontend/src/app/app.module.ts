@@ -30,6 +30,8 @@ import { NotificationsComponent } from './layouts/notifications/notifications.co
 import { NotificationItemComponent } from './layouts/notifications/notification-item/notification-item.component';
 import { FacialComponent } from './facial/facial.component';
 import { ControlComponent } from './control/control.component';
+import { AutoControlComponent } from './control/auto-control/auto-control.component';
+import { ManualControlComponent } from './control/manual-control/manual-control.component';
 
 // import { async } from 'async-waterfall';
 
@@ -57,6 +59,8 @@ import { ControlComponent } from './control/control.component';
     NotificationItemComponent,
     FacialComponent,
     ControlComponent,
+    AutoControlComponent,
+    ManualControlComponent,
   ],
   providers: [{
     provide: LocationStrategy,

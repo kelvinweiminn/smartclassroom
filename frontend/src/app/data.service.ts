@@ -181,4 +181,16 @@ export class DataService {
       .map((res) => res.json());
     }
 
+  //get mode
+    getMode(){
+      return this.http.get('http://localhost:3000/api/mockdata/getmode')
+      .map((res) => res.json());
+    }
+
+  //get mode
+    changeMode(mode){
+      return this.http.get('http://localhost:3000/api/mockdata/changemode/' + mode)
+      .map((res) => res.json());
+    }
+
 }

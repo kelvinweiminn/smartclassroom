@@ -11,15 +11,32 @@ var connection = mysql.createConnection({
 
 connection.connect();
 
-router.get('/', function(req,res){
+router.get('/getmode', function(req,res){
+        
+        connection.query("SELECT mode FROM SenseitTP.Mode where type = 'actuation';" , function (err, result) {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            else{
+                console.log("Got mode Successfully!");
+                res.send(result);
+            }
+        });
+        
+    });
+
+router.get('/changemode/:mode', function(req,res){
+
+    var mode = req.params.mode;
     
-    connection.query('SELECT * FROM SenseitTP.Emotions' , function (err, result) {
+    connection.query("UPDATE `SenseitTP`.`Mode` SET `mode`='" + mode + "' WHERE `type`='actuation'" , function (err, result) {
         if (err) {
             console.error(err);
             return;
         }
         else{
-            console.log("Queried Face data Successfully!");
+            console.log("Changed mode Successfully!");
             res.send(result);
         }
     });
