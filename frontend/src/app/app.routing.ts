@@ -34,7 +34,10 @@ export const routes: Routes = [
       },
       {
         path: 'control',
-        component: ControlComponent
+        component: ControlComponent,
+        data: {
+          title: 'Control'
+        }
       }
     ]
   },
