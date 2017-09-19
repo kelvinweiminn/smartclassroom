@@ -6,13 +6,16 @@ import {BaseChartDirective} from 'ng2-charts/ng2-charts';
 import {INgxMyDpOptions} from 'ngx-mydatepicker';                        
 import {IMyDpOptions,IMyDateModel, IMyDate, IMyOptions, IMyInputFieldChanged} from 'mydatepicker';
 import * as moment from 'moment-timezone';
+
 @Component({
   templateUrl: 'analytics.component.html'
 })
 
 export class AnalyticsComponent implements OnInit {
+
   constructor(private dataService: DataService){
   }
+  
   avgLight:string ;
   avgTemp:string;
   avgHumi:string;
@@ -36,6 +39,15 @@ export class AnalyticsComponent implements OnInit {
   minTempDayArr= [];
   
 
+  pieLightArr = [];
+  pieTempArr = [];
+  pieHumiArr = [];
+  pieCO2Arr = [];
+
+  pieLightDevice = [];
+  pieTempDevice = [];
+  pieHumiDevice = [];
+  pieCO2Device = [];
   
   timeHumiArr = [];
   timeCO2Arr = [];
@@ -53,21 +65,8 @@ export class AnalyticsComponent implements OnInit {
   counterArr=[];
   now = Date.now();
 
-  currentLocation= "All Locations";
-  tempDevice = '2102CB" or Device_ID = "210088" or Device_ID = "20FD79" or Device_ID = "2101E9" or Device_ID = "2102AC" or Device_ID = "1CB0C2" or Device_ID = "1CB021" or Device_ID = "1CB0D4 ';  
-  co2Device = '1C8876';
-  lightDevice = '20FE30" or Device_ID = "210043" or Device_ID = "21034E" or Device_ID = "2100AB" or Device_ID = "210285" or Device_ID = "1CB001" or Device_ID = "1CB049" or Device_ID = "1CB00D';
-    
-
-  pieLightArr = [];
-  pieTempArr = [];
-  pieHumiArr = [];
-  pieCO2Arr = [];
-
-  pieLightDevice = [];
-  pieTempDevice = [];
-  pieHumiDevice = [];
-  pieCO2Device = [];
+  currentLocation= "IIT1-6-59";
+  currentSession = "All Sessions";
 
   public brandPrimary = '#20a8d8';
   public brandSuccess = '#4dbd74';
@@ -77,66 +76,84 @@ export class AnalyticsComponent implements OnInit {
 
   faceArr = [];
   tempArr = [];
-  testDevice = '2102CB';
-  testDate = '2017-09-12';
+  tempDevice = '2102CB';
+  tempDate = '2017-09-12';
   timeFaceArr = [];
   timeTempArr = [];
   showTempTime = [];
   showFaceTime = [];
   rawTimeTemp;
   rawTimeFace;
+  dateSelected ;
+  displaydata;
+  newArr=[];
+  startSessionFace;
+  endSessionFace;
+  startSessionTemp;
+  endSessionTemp;
+  
 
+  tempDataArr=[];
+  faceDataArr=[];
   ngOnInit() {
-   this.retrieveFace();
-   this.retrieveTemp();
+   this.setCurrent();
   }
 //device id
   GetDeviceID(room:string){
     this.currentLocation = room;
     if(room == "IIT1-6-59"){
       this.tempDevice = '2102CB';
-      this.co2Device = '1C8876';
-      this.lightDevice = '20FE30';
     } else if (room == "IIT1-6-60"){
       this.tempDevice = '210043';
-      this.co2Device = '1C8876';
-      this.lightDevice = '210088';
     } else if (room == "IIT1-6-61"){
       this.tempDevice = '21034E';
-      this.co2Device = '1C8876';
-      this.lightDevice = '20FD79';
     } else if (room == "IIT3-7-50/2"){
       this.tempDevice = '210285';
-      this.co2Device = '1C8876';
-      this.lightDevice = '2102AC';
     } else if (room == "IIT3-7-46"){
       this.tempDevice = '2100AB';
-      this.co2Device = '1C8876';
-      this.lightDevice = '2101E9';
     } else if (room == "IIT3-8-32"){
       this.tempDevice = '1CB001';
-      this.co2Device = '1C8876';
-      this.lightDevice = '1CB0C2';
     } else if (room == "IoTLab"){
       this.tempDevice = '1CB00D';
-      this.co2Device = '1C8876';
-      this.lightDevice = '1CB0D4';
     } else if (room == "BigData"){
       this.tempDevice = '1CB049';
-      this.co2Device = '1C8876';
-      this.lightDevice = '1CB021';
     }
     else if (room == 'All Locations'){
       this.tempDevice = '2102CB" or Device_ID = "210088" or Device_ID = "20FD79" or Device_ID = "2101E9" or Device_ID = "2102AC" or Device_ID = "1CB0C2" or Device_ID = "1CB021" or Device_ID = "1CB0D4 ';  
-      this.co2Device = '1C8876';
-      this.lightDevice = '20FE30" or Device_ID = "210043" or Device_ID = "21034E" or Device_ID = "2100AB" or Device_ID = "210285" or Device_ID = "1CB001" or Device_ID = "1CB049" or Device_ID = "1CB00D';
     }
-    if(this.num == 7){
-      this.weekClick();
-    }else if (this.num==1){
-      this.monthClick();
-    }
+    this.retrieveTemp();
     
+  }
+  GetTime(session:string){
+    this.currentSession = session;
+    if (session == "Morning 8-10"){
+      this.startSessionFace='08';
+      this.endSessionFace='11';
+      this.startSessionTemp='07';
+      this.endSessionTemp='12';
+    } else if (session == "Morning 10-12"){
+      this.startSessionFace='10';
+      this.endSessionFace='13';
+      this.startSessionTemp='09';
+      this.endSessionTemp='14';
+    } else if (session == "Afternoon 12-14"){
+      this.startSessionFace='12';
+      this.endSessionFace='15';
+      this.startSessionTemp='11';
+      this.endSessionTemp='16';
+    } else if (session == "Afternoon 14-16"){
+      this.startSessionFace='14';
+      this.endSessionFace='17';
+      this.startSessionTemp='13';
+      this.endSessionTemp='18';
+    } else if (session == "Afternoon 16-18"){
+      this.startSessionFace='16';
+      this.endSessionFace='19';
+      this.startSessionTemp='15';
+      this.endSessionTemp='20';
+    } 
+    this.retrieveTempSession();
+    this.retrieveFaceSession();
   }
   // GetRoom(device:string){
     
@@ -175,248 +192,160 @@ export class AnalyticsComponent implements OnInit {
   //   }
     
   // }
-//select by week/month
-  firstDayOfMonth(day) {
-    var d = new Date(Date.apply(null, arguments));
-    d.setDate(1);
-    return d.toISOString();
-  }
 
-  lastDayOfMonth(day) {
-      var d = new Date(Date.apply(null, arguments));
-
-      d.setMonth(d.getMonth() + 1);
-      d.setDate(0);
-      return d.toISOString();
-  }
-  // callAll(){
-  //     this.tempCall();
-  //     this.humiCall();
-  //     this.lightCall();
-  //     this.CO2Call();
-
-  // }
-
-  minusButton(){
-    if(this.num==7 ){
-      var newDate =  new Date(this.startDate); 
-      newDate.setDate(newDate.getDate() - this.num);
-      var time = moment.tz(newDate, "Asia/singapore");
-      var Singapore = time.clone().tz("Asia/Singapore");
-      var formattedTime = Singapore.format("YYYY-MM-DD");
-      this.startDate = formattedTime;
-      var newDate =  new Date(this.endDate); 
-      newDate.setDate(newDate.getDate() - this.num);
-      var time = moment.tz(newDate, "Asia/singapore");
-      var Singapore = time.clone().tz("Asia/Singapore");
-      var formattedTime = Singapore.format("YYYY-MM-DD");
-      this.endDate = formattedTime;
-      this.displayArea ="Week ("+this.startDate +" to " +this.endDate+")";
-      
-      // this.callAll();
-    }
-    else if(this.num==1){
-      var newDate =  new Date(this.startDate); 
-      newDate.setDate(newDate.getDate() - this.num);
-      var time = moment.tz(newDate, "Asia/singapore");
-      var Singapore = time.clone().tz("Asia/Singapore");
-      var formattedTime = Singapore.format("YYYY-MM-DD");
-      this.endDate = formattedTime;
-
-      var newDate =  new Date(this.startDate); 
-      newDate.setMonth(newDate.getMonth() - this.num);
-      newDate.setDate(1);
-      var time = moment.tz(newDate, "Asia/singapore");
-      var Singapore = time.clone().tz("Asia/Singapore");
-      var formattedTime = Singapore.format("YYYY-MM-DD");
-      this.startDate = formattedTime;
-      this.displayArea ="Month ("+this.startDate +" to " +this.endDate+")";
-      
-
-      // this.callAll();
-    }
-  }
-  plusButton(){
-    if(this.num ==7){
-      var newDate =  new Date(this.startDate); 
-      newDate.setDate(newDate.getDate() + this.num);
-      var time = moment.tz(newDate, "Asia/singapore");
-      var Singapore = time.clone().tz("Asia/Singapore");
-      var formattedTime = Singapore.format("YYYY-MM-DD");
-      this.startDate = formattedTime;
-      var newDate =  new Date(this.endDate); 
-      newDate.setDate(newDate.getDate() + this.num);
-      var time = moment.tz(newDate, "Asia/singapore");
-      var Singapore = time.clone().tz("Asia/Singapore");
-      var formattedTime = Singapore.format("YYYY-MM-DD");
-      this.endDate = formattedTime;
-      this.displayArea ="Week ("+this.startDate +" to " +this.endDate+")";
-      // this.callAll();
-    }
-    else if(this.num == 1){
-      var newDate =  new Date(this.endDate); 
-      newDate.setDate(newDate.getDate() + this.num);
-      var time = moment.tz(newDate, "Asia/singapore");
-      var Singapore = time.clone().tz("Asia/Singapore");
-      var formattedTime = Singapore.format("YYYY-MM-DD");
-      this.startDate = formattedTime;
-
-      var newDate =  new Date(this.startDate); 
-      newDate.setMonth(newDate.getMonth() + this.num);
-      newDate.setDate(0);
-      var time = moment.tz(newDate, "Asia/singapore");
-      var Singapore = time.clone().tz("Asia/Singapore");
-      var formattedTime = Singapore.format("YYYY-MM-DD");
-      this.endDate = formattedTime;
-      this.displayArea ="Month ("+this.startDate +" to " +this.endDate+")";
-      
-
-      // this.callAll();
-    }
-  }
-
-      
-      
-  
-  weekClick(){
-    this.num = 7;
-    this.counterArr = this.getWeek(moment());
-    this.startDate = this.counterArr[0];
-    this.endDate = this.counterArr[6];
-    var UTC = moment.tz(this.startDate, "Asia/Singapore");
-    var Singapore = UTC.clone().tz("Asia/Singapore");
-    this.startDate = Singapore.format("YYYY-MM-DD");
-    var UTC = moment.tz(this.endDate, "Asia/Singapore");
-    var Singapore = UTC.clone().tz("Asia/Singapore");
-    this.endDate = Singapore.format("YYYY-MM-DD");
-    this.displayArea ="Week ("+this.startDate +" to " +this.endDate+")";
-    // this.callAll();
-  }
-  monthClick(){
-    this.num = 1;
-    this.now = Date.now();
-    this.startDate = this.firstDayOfMonth(this.now);
-    var UTC = moment.tz(this.startDate, "Asia/Singapore");
-    var Singapore = UTC.clone().tz("Asia/Singapore");
-    this.startDate = Singapore.format("YYYY-MM-DD");
-
-    this.endDate = this.lastDayOfMonth(this.now);
-    var UTC = moment.tz(this.endDate, "Asia/Singapore");
-    var Singapore = UTC.clone().tz("Asia/Singapore");
-    this.endDate = Singapore.format("YYYY-MM-DD");
-    this.displayArea ="Month ("+this.startDate +" to " +this.endDate+")";
-    // this.callAll();
-    
-  }
-  getWeek(day) {
-    var today = day.clone();
-    var monday = today.clone().startOf('isoWeek');
-    var sunday = today.clone().endOf('isoWeek');
-    var days = [];
-    for (var current = monday.clone(); current.isBefore(today, 'day'); current.add(1, 'days')) {
-        days.push(current.format());
-    }
-    days.push(today.format());
-    for (var current = today.clone().add(1, 'days');
-        current.isBefore(sunday, 'day') || (current.isSame(sunday, 'day') && !today.isSame(sunday, 'day'));
-        current.add(1, 'days')) {
-        days.push(current.format());
-    }
-    return days;
-};
-
-
-  
-//call light data    
-  lightCall(){
-    this.pieLightArr = [];
-    this.pieLightDevice = [];
-    //this.retrievePieLight();
-  }
-  // retrievePieLight(){
-  //   this.dataService.getLightPie(this.startDate,this.endDate).map(response => {
-  //     for(var item of response){
-  //     this.pieLightArr.push(item.average);
-  //     //this.GetRoom(item.device);
-      
-  //     }
-  //   }).subscribe(()=>{
-  //     console.log(JSON.stringify(this.pieTempDevice[0]));
-  //     console.log(parseFloat(this.pieTempArr[0]));
-  //   });
-  // }
 //call face data
+//date picker format  
+  private myDatePickerOptions: INgxMyDpOptions  = {
+        dateFormat: 'yyyy-mm-dd',    
+  };
+  
+//event listener for change in datepicker
+  onDateChanged(event: IMyDateModel){
+
+    this.dateSelected = event.formatted;
+    //console.log("Selected Date: " + this.dateSelected);
+    this.retrieveFace();
+    this.retrieveTemp();
+
+  }
+  setCurrent(){
+    var currentDate =  new Date();
+    var time = moment.tz(currentDate, "Asia/singapore");
+    var Singapore = time.clone().tz("Asia/Singapore");
+    var formattedTime = Singapore.format("YYYY-MM-DD");
+    this.dateSelected = formattedTime;
+    this.retrieveFace();
+    this.retrieveTemp();
+
+  }
   retrieveFace(){
-    this.dataService.getFaceAll().map(response => {
+      //this.dateSelected;
+      this.tempDataArr=[];
+      this.faceDataArr=[];
+      // this.faceArr=[];
+      // this.timeFaceArr=[];
+      this.dataService.getFaceData(this.dateSelected).map(response => {
       for(var item of response){
-      this.faceArr.push(parseFloat(item.percentage));
-      //console.log("facearr:" + this.faceArr);
-      var rawTimeFace = item.Time;
-      this.showFaceTime.push(rawTimeFace);
+      //this.faceArr.push(parseFloat(item.percentage));
+      // console.log(item.percentage);
+      // console.log("facearr:" + this.faceArr);
+      var rawTimeFace = item.time;
+      //this.showFaceTime.push(rawTimeFace);
       var time = moment.tz(rawTimeFace, "Asia/singapore");
-      this.timeFaceArr.push(time);
-      console.log("timearrface:"+this.showFaceTime)
+      //this.timeFaceArr.push(time);
+      console.log("timearrface:"+rawTimeFace)
+
+       this.faceDataArr.push({
+        x:rawTimeFace,
+        y:parseFloat(item.percentage)
+      })
     }
     }).subscribe(()=>{
-      this.refreshTemp();
+      this.refresh();
     });
   }
-  
-  retrieveTemp(){
-     this.dataService.getTempHumiData(this.testDevice,this.testDate,).map(response => {
+  retrieveFaceSession(){
+        
+        this.tempDataArr=[];
+        this.faceDataArr=[];
+        // this.tempArr=[];
+        // this.faceArr=[];
+        // this.timeTempArr=[];
+        // this.timeFaceArr=[];
+        this.dataService.getFaceSession(this.dateSelected,this.startSessionFace,this.endSessionFace).map(response => {
         for(var item of response){
-        this.tempArr.push(parseFloat(item.Temperature));
-        //console.log("temparr:"+this.tempArr)
-        var rawTimeTemp = item.Date;
-        this.showTempTime.push(rawTimeTemp);
-        var time = moment.tz(rawTimeTemp, "Asia/singapore");
-        this.timeTempArr.push(time);
-        console.log("timearrtemp:"+this.showTempTime)
+       // this.tempArr.push(parseFloat(item.Temperature));
+       // console.log("temparr:"+this.tempArr)
+        var rawTimeFace = item.time;
+        this.displaydata =  this.rawTimeFace ;
+        //this.showTempTime.push(rawTimeTemp);
+        var time = moment.tz(rawTimeFace, "Asia/singapore");
+        //this.timeTempArr.push(time);
+        this.faceDataArr.push({
+        x:rawTimeFace ,
+        y:parseFloat(item.percentage)
+      })
+        
         }
       }).subscribe(()=>{
-        this.refreshTemp();
+        this.refresh();
       });
   }
-  refreshTemp(){
-      this.faceData = [
+  retrieveTemp(){
+        this.tempDataArr=[];
+        this.faceDataArr=[];
+        //this.dateSelected;
+        // this.tempArr=[];
+        // this.faceArr=[];
+        // this.timeTempArr=[];
+        // this.timeFaceArr=[];
+        this.dataService.getTempHumiData(this.tempDevice,this.dateSelected).map(response => {
+        for(var item of response){
+        //this.tempArr.push(parseFloat(item.Temperature));
+        //console.log("temparr:"+this.tempArr)
+        var rawTimeTemp = item.Date;
+        this.displaydata =  this.rawTimeTemp ;
+        //this.showTempTime.push(rawTimeTemp);
+        var time = moment.tz(rawTimeTemp, "Asia/singapore");
+        //this.timeTempArr.push(time);
+        //console.log("timearrtemp:"+this.rawTimeTemp)
+        this.tempDataArr.push({
+        x:rawTimeTemp ,
+        y:parseFloat(item.Temperature)
+      })
+        }
+      }).subscribe(()=>{
+        this.refresh();
+      });
+  }
+  retrieveTempSession(){
+        
+        this.tempDataArr=[];
+        this.faceDataArr=[];
+        // this.tempArr=[];
+        // this.faceArr=[];
+        // this.timeTempArr=[];
+        // this.timeFaceArr=[];
+        this.dataService.getTempSession(this.tempDevice,this.dateSelected,this.startSessionTemp,this.endSessionTemp).map(response => {
+        for(var item of response){
+       // this.tempArr.push(parseFloat(item.Temperature));
+       // console.log("temparr:"+this.tempArr)
+        var rawTimeTemp = item.Date;
+        this.displaydata =  this.rawTimeTemp ;
+        //this.showTempTime.push(rawTimeTemp);
+        var time = moment.tz(rawTimeTemp, "Asia/singapore");
+        //this.timeTempArr.push(time);
+        this.tempDataArr.push({
+        x:rawTimeTemp ,
+        y:parseFloat(item.Temperature)
+      })
+        
+        }
+      }).subscribe(()=>{
+        this.refresh();
+      });
+  }
+  
+  refresh(){
+       this.faceData = [
             {
-            label: this.rawTimeFace,
-            data: this.tempArr,
-            yAxisID: 'left-y-axis'
+            label: 'Temperature (℃)',
+            data: this.tempDataArr,
+            yAxisID: 'left-y-axis',
           },
             {
-            label: this.rawTimeTemp,
-            data: this.faceArr,
-            yAxisID: 'right-y-axis'
-
+            label: 'Happiness (%)',
+            data: this.faceDataArr,
+            yAxisID: 'right-y-axis',
           },
         ]
-      setTimeout(() => {
-        this.faceLabels=this.timeFaceArr;
-        //this.tempLabels=this.timeTempArr;
+        setTimeout(() => {
+        //this.faceLabels=this.timeTempArr;
+        //this.faceLabels=this.timeFaceArr;
       });
   }
 
  
-//call temperature data  
-  // tempCall(){
-  //   this.pieTempArr = [];
-  //   this.pieTempDevice = [];
-  //   this.retrievePieTemp();
-  // } 
-  // retrievePieTemp(){
-  //   this.dataService.getTempPie(this.startDate,this.endDate).map(response => {
-  //     for(var item of response){
-  //     this.pieTempArr.push(parseFloat(item.average));
-  //     //this.GetRoom(item.device);
-  //     }
-  //   }).subscribe(()=>{
-  //     //this.tempLabels = this.pieTempDevice;
-  //     // this.tempData = this.pieTempArr;
-  //     // console.log(this.pieTempDevice);
-  //     // console.log(this.tempLabels);
-  //   });
-  // }
 
  
 //call humidity data  
@@ -451,7 +380,6 @@ export class AnalyticsComponent implements OnInit {
   //     }).subscribe(()=>{
   //     });
   // }
-
 
 
 // dropdown buttons
@@ -553,7 +481,6 @@ export class AnalyticsComponent implements OnInit {
   ];
   public mainChartLegend = false;
   public mainChartType = 'line';
-
 
 //light 
   private LightData = [
@@ -756,15 +683,19 @@ export class AnalyticsComponent implements OnInit {
 //face
 private faceData = [
     {
-      label: [],
+      label: 'temperature:',
       data: [],
-      yAxisID: 'left-y-axis'
+      yAxisID: 'left-y-axis',
+      //xAxisID: "bottom-x-axis"
+      //labels:[],
 
     },
     {
-      label: [],
+      label: 'happiness:',
       data: [],
-      yAxisID: 'right-y-axis'
+      yAxisID: 'right-y-axis',
+     // xAxisID: "top-x-axis"
+      //labels:[],
     },
 ];
 public faceLabels: Array<any> = [];
@@ -796,26 +727,52 @@ private optionsLineChart = {
       responsive: true,
       maintainAspectRatio:true,
       scales: {
+        // xAxes: [{
+        //     display: true,
+        //     type: "time",
+        // time: {
+        //         unit: "hour",
+        //         tooltipFormat: 'YYYY-MM-DD hh:mm A'
+        //     },
+        //     scaleLabel: {
+        //         display: true,
+        //         labelString: 'Time'
+        //     }
+        // },],
         xAxes: [{
-            display: true,
-            type: "time",
-            time: {
-                unit: "hour",
-                tooltipFormat: 'YYYY-MM-DD hh:mm A'
-            },
-            scaleLabel: {
-                display: false,
-                labelString: 'Time'
-            }
-        },],
+                position: "bottom",
+                type: "time", // gives us a date axis
+                //id: "bottom-x-axis",
+                // time: {
+                // unit: "hour",
+                // tooltipFormat: 'YYYY-MM-DD hh:mm A'
+                // },
+                // scaleLabel: {
+                // display: true,
+                // labelString: 'Time'
+                // }
+            // }, {
+            //     position: "top",
+            //     type: "time",
+            //     id: "top-x-axis",
+            //     // time: {
+            //     // unit: "hour",
+            //     // tooltipFormat: 'YYYY-MM-DD hh:mm A'
+            //     // },
+            //     // scaleLabel: {
+            //     // display: true,
+            //     // labelString: 'Time'
+            //     // }
+            // }],
+        }],
         yAxes: [{
           // ticks: {
-          //   beginAtZero: false
+          // display: true,
+          // labelString: 'Temperature (℃)'
           // },
           id: 'left-y-axis',
           type: 'linear',
-          position: 'left'
-
+          position: 'left',
         },
         {
           id: 'right-y-axis',
@@ -825,7 +782,6 @@ private optionsLineChart = {
       }
       
 };
-
 
 };
   
@@ -856,3 +812,6 @@ private optionsLineChart = {
   //         }]
   //       }
   //   };
+
+
+

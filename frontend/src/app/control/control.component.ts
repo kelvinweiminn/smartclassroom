@@ -15,7 +15,6 @@ export class ControlComponent implements OnInit {
 
   mode = '';
 
-  data = {};
 
   constructor(private dataService: DataService, private router: Router) { }
 
@@ -33,19 +32,4 @@ export class ControlComponent implements OnInit {
       console.log(res)
     });
   }
-
-  show(input: Event) {
-    var command = input.target["checked"];
-
-    if (command) {
-      this.dataService.switchToggle(135).subscribe(res => console.log(res));
-    } else {
-      this.dataService.switchToggle(134).subscribe(res => console.log(res));
-    }
-  }
-
-  onSubmit(){
-    console.log(this.data);
-  }
-
 }

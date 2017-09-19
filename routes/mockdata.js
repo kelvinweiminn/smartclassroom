@@ -19,7 +19,7 @@ router.get('/getmode', function(req,res){
                 return;
             }
             else{
-                console.log("Got mode Successfully!");
+                console.log("Retrieved mode Successfully!");
                 res.send(result);
             }
         });
@@ -40,8 +40,34 @@ router.get('/changemode/:mode', function(req,res){
             res.send(result);
         }
     });
-    
 });
 
+router.get('/getTemp', function(req,res){
+    
+    connection.query("SELECT * FROM SenseitTP.MockTemp ORDER BY Date DESC LIMIT 5" , function (err, result) {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        else{
+            console.log("Retrieved Mock Temp Successfully!");
+            res.send(result);
+        }
+    });
+});
+
+router.get('/getLight', function(req,res){
+    
+    connection.query("SELECT * FROM SenseitTP.MockLight ORDER BY Date DESC LIMIT 5" , function (err, result) {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        else{
+            console.log("Retrieved Mock Light Successfully!");
+            res.send(result);
+        }
+    });
+});
 
 module.exports = router;

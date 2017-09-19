@@ -15,17 +15,7 @@
             <td>Light</td>
             <td>
                 <label #input class="switch switch-sm switch-text switch-info pull-left m-b-0">
-                <input class="switch-input" type="checkbox">
-                <span class="switch-label" data-off="Off" data-on="On"></span>
-                <span class="switch-handle"></span>
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <td>A/C</td>
-            <td>
-                <label class="switch switch-sm switch-text switch-info pull-left m-b-0">
-                <input class="switch-input" type="checkbox">
+                <input class="switch-input" type="checkbox" (change)="toggle(1, $event)">
                 <span class="switch-label" data-off="Off" data-on="On"></span>
                 <span class="switch-handle"></span>
                 </label>
@@ -35,7 +25,7 @@
             <td>Fan</td>
             <td>
                 <label class="switch switch-sm switch-text switch-info pull-left m-b-0">
-                <input class="switch-input" type="checkbox" (change)="show($event)">
+                <input class="switch-input" type="checkbox" (change)="toggle(0, $event)">
                 <span class="switch-label" data-off="Off" data-on="On"></span>
                 <span class="switch-handle"></span>
                 </label>

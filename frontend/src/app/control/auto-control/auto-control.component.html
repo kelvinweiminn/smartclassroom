@@ -37,11 +37,11 @@
             <div class="col-md-9">
 
                 <label class="radio-inline" for="inline-radio1">
-                    <input id="inline-radio1" name="inline-radios" type="radio" value="light" [(ngModel)]="data.type" required> Light
+                    <input id="inline-radio1" name="inline-radios" type="radio" value="Light" [(ngModel)]="data.Type" required> Light
                 </label>
 
                 <label class="radio-inline" for="inline-radio2">
-                    <input id="inline-radio2" name="inline-radios" type="radio" value="temperature" [(ngModel)]="data.type" required> Temperature
+                    <input id="inline-radio2" name="inline-radios" type="radio" value="Temperature" [(ngModel)]="data.Type" required> Temperature
                 </label>
 
             </div>
@@ -50,7 +50,7 @@
             <div class="form-group row">
                 <label class="col-sm-3 form-control-label" for="input-large">Value</label>
                 <div class="col-sm-6">
-                    <input class="form-control input-lg" id="value" name="value" [(ngModel)]="data.value" placeholder="Mock Value" type="text">
+                    <input class="form-control input-lg" id="value" name="value" [(ngModel)]="data.Data" placeholder="Mock Value" type="text">
                 </div>
             </div>
 
@@ -76,11 +76,11 @@
     <div class="card-block">
         <div class="chart-wrapper">
         <canvas baseChart
-            [datasets]="tempDataset"
-            [labels]="tempLabels"
+            [datasets]="lightDataset"
+            [labels]="lightLabels"
             [options]="options"
             [chartType]="'line'"
-            [colors]="tempColour">
+            [colors]="lightColour">
         </canvas>
         <br/>
         </div>

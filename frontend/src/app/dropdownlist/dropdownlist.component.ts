@@ -381,7 +381,6 @@ export class DropdownlistComponent implements OnInit {
     }).subscribe(()=>{
       this.refreshCo2Chart();
     });
-    
   }
 
 //function to retrieve temperature and humidity values

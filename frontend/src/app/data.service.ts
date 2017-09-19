@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 @Injectable()
@@ -173,11 +173,23 @@ export class DataService {
       return this.http.get('http://localhost:3000/api/facedata/all')
       .map((res) => res.json());
     }
+    getTempSession(device,date,startHour,endHour){
+      return this.http.get('http://localhost:3000/api/facedata/tempdata/' + device + '/' + date + '/'+startHour+'/'+endHour)
+        .map(res => res.json());
+    }
+    getFaceData(date){
+      return this.http.get('http://localhost:3000/api/facedata/'+date)
+      .map((res) => res.json());
+    }
+    getFaceSession(date,startHour,endHour){
+      return this.http.get('http://localhost:3000/api/facedata/'+date + '/'+startHour+'/'+endHour)
+      .map((res) => res.json());
+    }
 
-
+    
   //switchcontrol
-    switchToggle(command){
-      return this.http.get('http://192.168.1.81:8181/device.cgi?dev=0&cmd=' + command)
+    switchToggle(dev, command){
+      return this.http.get('http://119.74.196.174:8181/device.cgi?dev=' + dev + '&cmd=' + command)
       .map((res) => res.json());
     }
 
@@ -187,10 +199,26 @@ export class DataService {
       .map((res) => res.json());
     }
 
-  //get mode
+  //change mode
     changeMode(mode){
       return this.http.get('http://localhost:3000/api/mockdata/changemode/' + mode)
       .map((res) => res.json());
     }
 
+  //retrieve mock temperature
+    getMockTemp(){
+      return this.http.get('http://localhost:3000/api/mockdata/gettemp')
+      .map(res => res.json());
+    }
+    
+  //retrive mock light
+    getMockLight(){
+      return this.http.get('http://localhost:3000/api/mockdata/getlight')
+      .map(res => res.json());
+    }
+    
+    //post mock data
+    postMockData(body){
+      return this.http.post('https://j9ibv909ua.execute-api.us-east-2.amazonaws.com/prod/mock/', body);
+    }
 }
