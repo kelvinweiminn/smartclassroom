@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import { DataService } from '../../data.service';
 
@@ -9,13 +9,34 @@ import { DataService } from '../../data.service';
 })
 export class ManualControlComponent implements OnInit {
 
-  constructor(private dataService: DataService) { }
+  lightChecked;
+  fanChecked;
+
+  constructor(private dataService: DataService) {}
 
   ngOnInit() {
+
+    this.dataService.getSwitchStatus(1).subscribe(res => {
+      console.log('Light Switch Status: ' + res['_body']);
+      if (res['_body'] === '8') {
+        this.lightChecked = true;
+      } else {
+        this.lightChecked = false;
+      }
+    })
+
+    this.dataService.getSwitchStatus(0).subscribe(res => {
+      console.log('Fan Switch Status: ' + res['_body']);
+      if (res['_body'] === '8') {
+        this.fanChecked = true;
+      } else {
+        this.fanChecked = false;
+      }
+    })
   }
 
   toggle(dev, input: Event) {
-    var command = input.target["checked"];
+    const command = input.target['checked'];
 
     if (command) {
       this.dataService.switchToggle(dev, 135).subscribe(res => console.log(res));
