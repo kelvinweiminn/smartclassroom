@@ -1,45 +1,88 @@
 <div class ="animated fadeIn">
   <div class="row">
-    <div class="col-6 col-lg-3">
-      <div class="card">
-        <div class="card-block  p-0 clearfix">
-          <i class="fa fa-sun-o bg-info p-4 px-5 font-2xl mr-3 float-left"></i>
-          <div class="h5 text-info mb-0 pt-3">{{avgTemp}}°C</div>
-          <div class="text-muted text-uppercase font-weight-bold font-xs">Temperature Avg</div>
-        </div>
+    <div class="col-md-3 col-sm-3" >
+      <div class="social-box" >
+        <i class="fa fa-sun-o bg-info"><span style="font-family: Calibri" class="h2"> Temperature</span></i>
+        <ul>
+            <li>
+              <strong class="text-info"><span class="text-info">Max:</span> {{maxTemp}} °C</strong>
+              <span >{{maxTempDate}}</span>
+            </li>
+            <li>
+              <strong class="text-info" ><span class="text-info">Min:</span> {{minTemp}} °C</strong>
+              <span >{{minTempDate}}</span>
+      
+            </li>
+        </ul>
+        <br>
+          <div class="card-block p-0 clearfix">
+          <div class="h8 text-info mb-0 pt-3">Avg:<strong  class="h4"> {{avgTemp}} °C</strong></div>   
+          </div>
+        <br>
       </div>
     </div>
-    <!--/.col-->
-    <div class="col-6 col-lg-3">
-      <div class="card">
-        <div class="card-block p-0 clearfix">
-          <i class="icon-drop bg-primary p-4 px-5 font-2xl mr-3 float-left"></i>
-          <div class="h5 text-primary mb-0 pt-3">{{avgHumi}}%</div>
-          <div class="text-muted text-uppercase font-weight-bold font-xs">Humidity Avg</div>
-        </div>
+    <div class="col-md-3 col-sm-3" >
+      <div class="social-box" >
+        <i class="icon-drop bg-primary" ><span style="font-family: Calibri" class="h2"> Humidity</span></i>
+        <ul>
+            <li>
+                <strong class="text-primary"><span class="text-primary">Max:</span> {{maxHumi}} %</strong>
+                <span>{{maxHumiDate}} </span>
+            </li>
+            <li>
+                <strong class="text-primary"><span class="text-primary">Min:</span> {{minHumi}} %</strong>
+                <span>{{minHumiDate}}</span>
+            </li>
+        </ul>
+        <br>
+          <div class="card-block p-0 clearfix"></div>
+          
+          <div class="h8 text-primary mb-0 pt-3">Avg:<strong class="h4"> {{avgHumi}} % </strong></div>   
+        
+        <br>
       </div>
     </div>
-    <!--/.col-->
-    <div class="col-6 col-lg-3">
-      <div class="card">
-        <div class="card-block p-0 clearfix">
-          <i class="fa fa-lightbulb-o bg-warning p-4 px-5 font-2xl mr-3 float-left"></i>
-          <div class="h5 text-warning mb-0 pt-3">{{avgLight}}lux</div>
-          <div class="text-muted text-uppercase font-weight-bold font-xs">Light Avg</div>
-        </div>
+    <div class="col-md-3 col-sm-3" >
+      <div class="social-box" >
+        <i class="fa fa-lightbulb-o bg-warning"> <span style="font-family: Calibri" class="h2"> Light</span></i>
+        <ul>
+            <li>
+                <strong class="text-warning"><span class="text-warning">Max:</span> {{maxLight}} lux</strong>
+                <span>{{maxLightDate}}</span>
+            </li>
+            <li>
+                <strong class="text-warning" ><span class="text-warning">Min:</span> {{minLight}} lux</strong>
+                <span>{{minLightDate}}</span>
+            </li>
+        </ul>
+        <br>
+          <div class="card-block p-0 clearfix">
+          <div class="h8 text-warning mb-0 pt-3">Avg:<strong  class="h4"> {{avgLight}} lux</strong></div>   
+          </div>
+        <br>
       </div>
     </div>
-    <!--/.col-->
-    <div class="col-6 col-lg-3">
-      <div class="card">
-        <div class="card-block p-0 clearfix">
-          <i class="fa fa-cloud bg-danger p-4 px-5 font-2xl mr-3 float-left"></i>
-          <div class="h5 text-danger mb-0 pt-3">{{avgCO2}}ppm</div>
-          <div class="text-muted text-uppercase font-weight-bold font-xs">CO2 Avg</div>
-        </div>
+    <div class="col-md-3 col-sm-3" >
+      <div class="social-box" >
+        <i class="fa fa-cloud bg-danger" ><span style="font-family: Calibri" class="h2"> CO2</span></i>
+        <ul>
+            <li>
+                <strong class="text-danger"><span class="text-danger">Max:</span> {{maxCO2}} ppm</strong>
+                <span>{{maxCO2Date}}</span>
+            </li>
+            <li>
+                <strong class="text-danger"><span class="text-danger">Min:</span> {{minCO2}} ppm</strong>
+                <span>{{minCO2Date}}</span>
+            </li>
+        </ul>
+        <br>
+          <div class="card-block p-0 clearfix">
+          <div class="h8 text-danger mb-0 pt-3">Avg:<strong  class="h4"> {{avgCO2}} ppm</strong></div>   
+          </div>
+        <br>
       </div>
     </div>
-    <!--/.col-->
+    
   </div>
 </div>
 
@@ -51,9 +94,8 @@
   <tr>
     <td style="width:25%;">
       <div class="btn-group float-left" dropdown>
-        <button type="button" class="btn dropdown-toggle" dropdownToggle><strong>Locations</strong></button>
+        <button type="button" class="btn btn-primary dropdown-toggle" dropdownToggle><strong>Locations</strong></button>
         <div class="dropdown-menu dropdown-menu-left" *dropdownMenu>
-          <a class="dropdown-item" (click)="GetDeviceID('All Locations')" >All Locations</a>
           <a class="dropdown-item" (click)="GetDeviceID('IIT1-6-59')" >IIT1-6-59</a>
           <a class="dropdown-item" (click)="GetDeviceID('IIT1-6-60')" >IIT1-6-60</a>
           <a class="dropdown-item" (click)="GetDeviceID('IIT1-6-61')" >IIT1-6-61</a>
@@ -84,80 +126,81 @@
 
 <div class="animated fadeIn">
   <div class="row">
-  <div class="animated fadeIn">
-    <div class="card" style="position: relative; height:45vh" >
-      <div class="card-header">
-        Temperature
-      </div>
+    <div class="col-lg-12">
+      <div class="animated fadeIn">
+          <div class="card" style="position: relative; height:45vh" >
+            <div class="card-header">
+              Temperature
+            </div>
+        
+            <div class="card-block" >
+              <div class="chart-wrapper" >
+                <canvas baseChart class="chart" height="400" width="1922" 
+                  [datasets]="TempData"
+                  [labels]="TempLabels"
+                  [options]="optionsLineChart"
+                  [chartType]="'line'"
+                  [legend]="true"
+                  [colors]="tempColour"
+                >           
+                </canvas>
+                <br/>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="position: relative; height:45vh">
+            <div class="card-header">
+              Humidity
+            </div>
+            <div class="card-block">
+              <div class="chart-wrapper">
+                <canvas baseChart height="400" width="1922" 
+                  [datasets]="HumiData"
+                  [labels]="HumiLabels"
+                  [options]="optionsLineChart"
+                  [chartType]="'line'"
+                  [colors]="humiColour">>
+                </canvas>
+                <br/>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="position: relative; height:45vh">
+            <div class="card-header">
+              Light
+            </div>
+            <div class="card-block">
+              <div class="chart-wrapper">
+                <canvas baseChart height="400" width="1922" 
+                  [datasets]="LightData"
+                  [labels]="LightLabels"
+                  [options]="optionsLineChart"
+                  [chartType]="'line'"
+                  [colors]="lightColour">>
+                </canvas>
+                <br/>
+              </div>
+            </div>
+          </div> 
+          <div class="card"style="position: relative; height:45vh">
+            <div class="card-header">
+              CO2
+            </div>
+            <div class="card-block">
+              <div class="chart-wrapper">
+                <canvas baseChart height="400" width="1922" 
+                  [datasets]="CO2Data"
+                  [labels]="CO2Labels"
+                  [options]="optionsLineChart"
+                  [chartType]="'line'"
+                  [colors]="co2Colour">>
+                </canvas>
+                <br/>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div><!--/.row-->
+  </div>
+</div> //////////// bootstrap col-
   
-      <div class="card-block" >
-        <div class="chart-wrapper" >
-          <canvas baseChart class="chart" height="400" width="1922" 
-            [datasets]="TempData"
-            [labels]="TempLabels"
-            [options]="optionsLineChart"
-            [chartType]="'line'"
-            [legend]="true"
-            [colors]="tempColour"
-          >           
-          </canvas>
-          <br/>
-        </div>
-      </div>
-    </div>
-    <div class="card" style="position: relative; height:45vh">
-      <div class="card-header">
-        Humidity
-      </div>
-      <div class="card-block">
-        <div class="chart-wrapper">
-          <canvas baseChart height="400" width="1922" 
-            [datasets]="HumiData"
-            [labels]="HumiLabels"
-            [options]="optionsLineChart"
-            [chartType]="'line'"
-            [colors]="humiColour">>
-          </canvas>
-          <br/>
-        </div>
-      </div>
-    </div>
-    <div class="card" style="position: relative; height:45vh">
-      <div class="card-header">
-        Light
-      </div>
-      <div class="card-block">
-        <div class="chart-wrapper">
-          <canvas baseChart height="400" width="1922" 
-            [datasets]="LightData"
-            [labels]="LightLabels"
-            [options]="optionsLineChart"
-            [chartType]="'line'"
-            [colors]="lightColour">>
-          </canvas>
-          <br/>
-        </div>
-      </div>
-    </div> 
-    <div class="card"style="position: relative; height:45vh">
-      <div class="card-header">
-        CO2
-      </div>
-      <div class="card-block">
-        <div class="chart-wrapper">
-          <canvas baseChart height="400" width="1922" 
-            [datasets]="CO2Data"
-            [labels]="CO2Labels"
-            [options]="optionsLineChart"
-            [chartType]="'line'"
-            [colors]="co2Colour">>
-          </canvas>
-          <br/>
-        </div>
-      </div>
-    </div>
-  
-
-    </div>
-  </div><!--/.row-->
-</div>

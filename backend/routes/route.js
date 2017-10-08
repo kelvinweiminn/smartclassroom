@@ -472,7 +472,7 @@ connection.connect();
     });
     router.get('/tempdata/max/device/:id', function(req,res){
         var id = req.params.id;
-        connection.query('SELECT round(max(Temperature),2) as  max FROM SenseitTP.TempHumi WHERE (Device_ID = "' + id + '") ' , 
+        connection.query('SELECT round(max(Temperature),2) as max FROM SenseitTP.TempHumi WHERE (Device_ID = "' + id + '") ' , 
         function (err, result) {
             
             if (err) {
@@ -503,6 +503,7 @@ connection.connect();
         });
 
     });
+    
     router.get('/humidata/max/device/:id', function(req,res){
         var id = req.params.id;
         connection.query('SELECT round( max(Humidity),2) as  max FROM SenseitTP.TempHumi WHERE (Device_ID = "' + id + '") ' , 
@@ -748,6 +749,141 @@ router.get('/notifications/all', function(req,res){
     });
 
 });
+//range data
+    router.get('/temp/maxdata/:id/:startDate/:endDate', function(req,res){
+            var startDate = req.params.startDate;
+            var endDate = req.params.endDate;
+            var id = req.params.id;
+            connection.query('select Temperature as max,Date from SenseitTP.TempHumi where (Temperature= (select max(Temperature) from SenseitTP.TempHumi where (Date between "' + startDate + '" and "' + endDate + '" or Date like "' + endDate + '%") and Device_ID="' + id + '" )) and (Date between "' + startDate + '" and "' + endDate + '" or Date like "' + endDate + '%") and Device_ID="' + id + '"  limit 1;' , function (err, result) {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                else{
+                    console.log("Queried Successfully!");
+                    res.send(result);
+                }
+            });
+    });
+    router.get('/temp/mindata/:id/:startDate/:endDate', function(req,res){
+        var startDate = req.params.startDate;
+        var endDate = req.params.endDate;
+        var id = req.params.id;
+        connection.query('select Temperature as min,Date from SenseitTP.TempHumi where (Temperature= (select min(Temperature) from SenseitTP.TempHumi where (Date between "' + startDate + '" and "' + endDate + '" or Date like "' + endDate + '%") and Device_ID="' + id + '" )) and (Date between "' + startDate + '" and "' + endDate + '" or Date like "' + endDate + '%") and Device_ID="' + id + '"  limit 1;' , function (err, result) {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            else{
+                console.log("Queried Successfully!");
+                res.send(result);
+            }
+        });
+    });
+    router.get('/humi/maxdata/:id/:startDate/:endDate', function(req,res){
+            var startDate = req.params.startDate;
+            var endDate = req.params.endDate;
+            var id = req.params.id;
+            connection.query('select Humidity as max,Date from SenseitTP.TempHumi where (Humidity= (select max(Humidity) from SenseitTP.TempHumi where (Date between "' + startDate + '" and "' + endDate + '" or Date like "' + endDate + '%") and Device_ID="' + id + '" )) and (Date between "' + startDate + '" and "' + endDate + '" or Date like "' + endDate + '%") and Device_ID="' + id + '"  limit 1;' , function (err, result) {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                else{
+                    console.log("Queried Successfully!");
+                    res.send(result);
+                }
+            });
+    });
+    router.get('/humi/mindata/:id/:startDate/:endDate', function(req,res){
+        var startDate = req.params.startDate;
+        var endDate = req.params.endDate;
+        var id = req.params.id;
+        connection.query('select Humidity as min,Date from SenseitTP.TempHumi where (Humidity= (select min(Humidity) from SenseitTP.TempHumi where (Date between "' + startDate + '" and "' + endDate + '" or Date like "' + endDate + '%") and Device_ID="' + id + '" )) and (Date between "' + startDate + '" and "' + endDate + '" or Date like "' + endDate + '%") and Device_ID="' + id + '"  limit 1;' , function (err, result) {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            else{
+                console.log("Queried Successfully!");
+                res.send(result);
+            }
+        });
+    });
+     router.get('/co2/maxdata/:id/:startDate/:endDate', function(req,res){
+            var startDate = req.params.startDate;
+            var endDate = req.params.endDate;
+            var id = req.params.id;
+            connection.query('select Data as max,Date from SenseitTP.CO2 where (Data= (select max(Data) from SenseitTP.CO2 where (Date between "' + startDate + '" and "' + endDate + '" or Date like "' + endDate + '%") and DeviceID="' + id + '" )) and (Date between "' + startDate + '" and "' + endDate + '" or Date like "' + endDate + '%") and DeviceID="' + id + '"  limit 1;' , function (err, result) {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                else{
+                    console.log("Queried Successfully!");
+                    res.send(result);
+                }
+            });
+    });
+    router.get('/co2/mindata/:id/:startDate/:endDate', function(req,res){
+        var startDate = req.params.startDate;
+        var endDate = req.params.endDate;
+        var id = req.params.id;
+        connection.query('select Data as min,Date from SenseitTP.CO2 where (Data= (select min(Data) from SenseitTP.CO2 where (Date between "' + startDate + '" and "' + endDate + '" or Date like "' + endDate + '%") and DeviceID="' + id + '" )) and (Date between "' + startDate + '" and "' + endDate + '" or Date like "' + endDate + '%") and DeviceID="' + id + '"  limit 1;' , function (err, result) {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            else{
+                console.log("Queried Successfully!");
+                res.send(result);
+            }
+        });
+    });
+     router.get('/light/maxdata/:id/:startDate/:endDate', function(req,res){
+            var startDate = req.params.startDate;
+            var endDate = req.params.endDate;
+            var id = req.params.id;
+            connection.query('select Value as max,Date from SenseitTP.Light where (Value= (select max(Value) from SenseitTP.Light where (Date between "' + startDate + '" and "' + endDate + '" or Date like "' + endDate + '%") and Device_ID="' + id + '" )) and (Date between "' + startDate + '" and "' + endDate + '" or Date like "' + endDate + '%") and Device_ID="' + id + '"  limit 1;' , function (err, result) {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                else{
+                    console.log("Queried Successfully!");
+                    res.send(result);
+                }
+            });
+    });
+    router.get('/light/mindata/:id/:startDate/:endDate', function(req,res){
+        var startDate = req.params.startDate;
+        var endDate = req.params.endDate;
+        var id = req.params.id;
+        connection.query('select Value as min,Date from SenseitTP.Light where (Value= (select min(Value) from SenseitTP.Light where (Date between "' + startDate + '" and "' + endDate + '" or Date like "' + endDate + '%") and Device_ID="' + id + '" )) and (Date between "' + startDate + '" and "' + endDate + '" or Date like "' + endDate + '%") and Device_ID="' + id + '"  limit 1;' , function (err, result) {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            else{
+                console.log("Queried Successfully!");
+                res.send(result);
+            }
+        });
+    });
+    router.get('/timetable/:location/:date', function(req,res){
+        var location = req.params.location;
+        var date = req.params.date;
+        connection.query('select * from SenseitTP.TimeTable where Time like "'+date+'%" and Location = "'+location+'"' , function (err, result) {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            else{
+                console.log("Queried Successfully!");
+                res.send(result);
+            }
+        });
+    });
 
 
 

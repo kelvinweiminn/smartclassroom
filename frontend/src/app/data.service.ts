@@ -225,4 +225,46 @@ export class DataService {
     getSwitchStatus(number) {
       return this.http.get('http://192.168.2.81:8181/device.cgi?dev=' + number + '&cmd=128');
     }
+
+  //range data
+    getRangeMaxTemp(device,startDate,endDate )
+    {
+      return this.http.get('http://localhost:3000/api/temp/maxdata/'+ device + '/'+ startDate+ '/' + endDate)
+        .map(res => res.json());
+    } 
+  getRangeMinTemp(device,startDate,endDate )
+    {
+      return this.http.get('http://localhost:3000/api/temp/mindata/'+ device + '/'+ startDate+ '/' + endDate)
+        .map(res => res.json());
+    }
+  getRangeMaxHumi(device,startDate,endDate )
+    {
+      return this.http.get('http://localhost:3000/api/humi/maxdata/'+ device + '/'+ startDate+ '/' + endDate)
+        .map(res => res.json());
+    } 
+  getRangeMinHumi(device,startDate,endDate )
+    {
+      return this.http.get('http://localhost:3000/api/humi/mindata/'+ device + '/'+ startDate+ '/' + endDate)
+        .map(res => res.json());
+    }
+  getRangeMaxCO2(device,startDate,endDate )
+    {
+      return this.http.get('http://localhost:3000/api/co2/maxdata/'+ device + '/'+ startDate+ '/' + endDate)
+        .map(res => res.json());
+    } 
+  getRangeMinCO2(device,startDate,endDate )
+    {
+      return this.http.get('http://localhost:3000/api/co2/mindata/'+ device + '/'+ startDate+ '/' + endDate)
+        .map(res => res.json());
+    }
+  getRangeMaxLight(device,startDate,endDate )
+    {
+      return this.http.get('http://localhost:3000/api/light/maxdata/'+ device + '/'+ startDate+ '/' + endDate)
+        .map(res => res.json());
+    } 
+  getRangeMinLight(device,startDate,endDate )
+    {
+      return this.http.get('http://localhost:3000/api/light/mindata/'+ device + '/'+ startDate+ '/' + endDate)
+        .map(res => res.json());
+    }
 }

@@ -13,11 +13,30 @@ import * as moment from 'moment-timezone';
 export class DashboardComponent implements OnInit {
   constructor(private dataService: DataService){
   }
-  avgLight:string ;
+
   avgTemp:string;
+  maxTemp:string;
+  maxTempDate;
+  minTemp:string;
+  minTempDate;
+
   avgHumi:string;
+  maxHumi:string;
+  maxHumiDate;
+  minHumi:string;
+  minHumiDate;
+
+  avgLight:string;
+  maxLight:string;
+  maxLightDate;
+  minLight:string;
+  minLightDate;
+
   avgCO2:string;
-  
+  maxCO2:string;
+  maxCO2Date;
+  minCO2:string;
+  minCO2Date;
 
   avgLightDayArr = [];
   maxLightDayArr = [];
@@ -53,10 +72,10 @@ export class DashboardComponent implements OnInit {
   counterArr=[];
   now = Date.now();
 
-  currentLocation= "All Locations";
-  tempDevice = '2102CB" or Device_ID = "210088" or Device_ID = "20FD79" or Device_ID = "2101E9" or Device_ID = "2102AC" or Device_ID = "1CB0C2" or Device_ID = "1CB021" or Device_ID = "1CB0D4 ';  
+  currentLocation= "IIT1-6-59";
+  tempDevice = '2102CB';  
   co2Device = '1C8876';
-  lightDevice = '20FE30" or Device_ID = "210043" or Device_ID = "21034E" or Device_ID = "2100AB" or Device_ID = "210285" or Device_ID = "1CB001" or Device_ID = "1CB049" or Device_ID = "1CB00D';
+  lightDevice = '20FE30';
     
 
 
@@ -87,7 +106,7 @@ export class DashboardComponent implements OnInit {
       this.lightDevice = '20FD79';
     } else if (room == "IIT3-7-50/2"){
       this.tempDevice = '210285';
-      this.co2Device = '1C8876';
+      this.co2Device = '2C3112';
       this.lightDevice = '2102AC';
     } else if (room == "IIT3-7-46"){
       this.tempDevice = '2100AB';
@@ -105,11 +124,6 @@ export class DashboardComponent implements OnInit {
       this.tempDevice = '1CB049';
       this.co2Device = '1C8876';
       this.lightDevice = '1CB021';
-    }
-    else if (room == 'All Locations'){
-      this.tempDevice = '2102CB" or Device_ID = "210088" or Device_ID = "20FD79" or Device_ID = "2101E9" or Device_ID = "2102AC" or Device_ID = "1CB0C2" or Device_ID = "1CB021" or Device_ID = "1CB0D4 ';  
-      this.co2Device = '1C8876';
-      this.lightDevice = '20FE30" or Device_ID = "210043" or Device_ID = "21034E" or Device_ID = "2100AB" or Device_ID = "210285" or Device_ID = "1CB001" or Device_ID = "1CB049" or Device_ID = "1CB00D';
     }
     if(this.num == 7){
       this.weekClick();
@@ -269,7 +283,7 @@ export class DashboardComponent implements OnInit {
 };
 
 
-
+//
   
 //call light data    
   lightCall(){
@@ -281,6 +295,8 @@ export class DashboardComponent implements OnInit {
     this.retrieveMaxLightDay();
     this.retrieveMinLightDay();
     this.retrieveAvgLight();
+    this.retrieveMaxLight();
+    this.retrieveMinLight();
   }
   //avg
     retrieveAvgLight(){
@@ -291,11 +307,25 @@ export class DashboardComponent implements OnInit {
       }).subscribe(()=>{
       });
     }
+    retrieveMaxLight(){
+      this.dataService.getRangeMaxLight(this.lightDevice,this.startDate,this.endDate).map(response => {
+        for(var item of response){
+        this.maxLight = JSON.stringify(item.max);
+        this.maxLightDate = item.Date;
+        }
+      }).subscribe(()=>{
+      });
+    }
+    retrieveMinLight(){
+      this.dataService.getRangeMinLight(this.lightDevice,this.startDate,this.endDate).map(response => {
+        for(var item of response){
+        this.minLight = JSON.stringify(item.min);
+        this.minLightDate = item.Date;
+        }
+      }).subscribe(()=>{
+      });
+    }
     retrieveAvgLightDay(){
-        console.log("inday: "+this.startDate);
-        console.log("outday: "+this.endDate);
-        console.log("device:"+this.lightDevice)
-        
         this.dataService.getLightAverageDay(this.lightDevice,this.startDate,this.endDate).map(response => {      
         for(var item of response){
           var data = parseFloat(item.average);
@@ -303,7 +333,7 @@ export class DashboardComponent implements OnInit {
           var rawTime = item.Date;
           var time = moment.tz(rawTime, "Asia/singapore");
           this.timeLightArr.push(rawTime);
-          console.log("avg light arr"+this.avgLightDayArr);
+          //console.log("avg light arr"+this.avgLightDayArr);
         }
       }).subscribe(()=>{
         this.refreshLight();
@@ -370,6 +400,8 @@ export class DashboardComponent implements OnInit {
     this.retrieveMaxTempDay();
     this.retrieveMinTempDay();
     this.retrieveAvgTemp();
+    this.retrieveMaxTemp();
+    this.retrieveMinTemp();
   } 
 
   //avg
@@ -377,6 +409,24 @@ export class DashboardComponent implements OnInit {
       this.dataService.getTempAverage(this.tempDevice,this.startDate,this.endDate).map(response => {
         for(var item of response){
         this.avgTemp = JSON.stringify(item.average);
+        }
+      }).subscribe(()=>{
+      });
+    }
+    retrieveMaxTemp(){
+      this.dataService.getRangeMaxTemp(this.tempDevice,this.startDate,this.endDate).map(response => {
+        for(var item of response){
+        this.maxTemp = JSON.stringify(item.max);
+        this.maxTempDate = item.Date;
+        }
+      }).subscribe(()=>{
+      });
+    }
+    retrieveMinTemp(){
+      this.dataService.getRangeMinTemp(this.tempDevice,this.startDate,this.endDate).map(response => {
+        for(var item of response){
+        this.minTemp = JSON.stringify(item.min);
+        this.minTempDate = item.Date;
         }
       }).subscribe(()=>{
       });
@@ -454,6 +504,8 @@ export class DashboardComponent implements OnInit {
     this.retrieveMaxHumiDay();
     this.retrieveMinHumiDay();
     this.retrieveAvgHumi();
+    this.retrieveMaxHumi();
+    this.retrieveMinHumi();
   }
   
   //avg
@@ -461,6 +513,24 @@ export class DashboardComponent implements OnInit {
       this.dataService.getHumiAverage(this.tempDevice,this.startDate,this.endDate).map(response => {
         for(var item of response){
         this.avgHumi = JSON.stringify(item.average);
+        }
+      }).subscribe(()=>{
+      });
+    }
+    retrieveMaxHumi(){
+      this.dataService.getRangeMaxHumi(this.tempDevice,this.startDate,this.endDate).map(response => {
+        for(var item of response){
+        this.maxHumi = JSON.stringify(item.max);
+        this.maxHumiDate = item.Date;
+        }
+      }).subscribe(()=>{
+      });
+    }
+    retrieveMinHumi(){
+      this.dataService.getRangeMinHumi(this.tempDevice,this.startDate,this.endDate).map(response => {
+        for(var item of response){
+        this.minHumi = JSON.stringify(item.min);
+        this.minHumiDate = item.Date;
         }
       }).subscribe(()=>{
       });
@@ -537,6 +607,8 @@ export class DashboardComponent implements OnInit {
     this.retrieveMaxCO2Day();
     this.retrieveMinCO2Day();
     this.retrieveAvgCO2();
+    this.retrieveMaxCO2();
+    this.retrieveMinCO2();
   }
  
   //avg
@@ -547,6 +619,25 @@ export class DashboardComponent implements OnInit {
           }
         }).subscribe(()=>{
         });
+    }
+    retrieveMaxCO2(){
+      this.dataService.getRangeMaxCO2(this.co2Device,this.startDate,this.endDate).map(response => {
+        for(var item of response){
+        this.maxCO2 = JSON.stringify(item.max);
+        this.maxCO2Date = item.Date;
+        console.log("co2 max"+this.maxCO2)
+        }
+      }).subscribe(()=>{
+      });
+    }
+    retrieveMinCO2(){
+      this.dataService.getRangeMinCO2(this.co2Device,this.startDate,this.endDate).map(response => {
+        for(var item of response){
+        this.minCO2 = JSON.stringify(item.min);
+        this.minCO2Date = item.Date;
+        }
+      }).subscribe(()=>{
+      });
     }
     retrieveAvgCO2Day(){
       this.dataService.getCO2AverageDay(this.co2Device,this.startDate,this.endDate).map(response => {
@@ -1053,7 +1144,7 @@ private optionsLineChart = {
             type: "time",
             time: {
                 unit: "hour",
-                tooltipFormat: 'YYYY-MM-DD hh:mm A'
+                tooltipFormat: 'YYYY-MM-DD'
             },
             scaleLabel: {
                 display: false,
