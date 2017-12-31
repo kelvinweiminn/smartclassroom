@@ -13,7 +13,7 @@
   "devDependencies": {
     "nodemon": "^1.11.0"
   },
-  "scripts":{
+  "scripts": {
     "start": "node script.js"
   }
 }
