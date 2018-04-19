@@ -4,9 +4,9 @@ var mysql = require('mysql');
 
 var connection = mysql.createConnection({
     host     : 'sensittp.cks7vws2tzgh.us-east-2.rds.amazonaws.com',
-    user     : 'tpstudent',
-    password : 'temasek2017',
-    database : 'SenseitTP',
+    user     : 'username',
+    password : 'password',
+    database : 'database',
 });
 connection.connect();
 //test data
