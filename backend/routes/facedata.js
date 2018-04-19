@@ -4,8 +4,8 @@ const router = express.Router();
 
 var connection = mysql.createConnection({
     host     : 'sensittp.cks7vws2tzgh.us-east-2.rds.amazonaws.com',
-    user     : 'tpstudent',
-    password : 'temasek2017',
+    user     : 'username',
+    password : 'password',
     database : 'SenseitTP',
 });
 
